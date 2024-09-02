@@ -3,14 +3,13 @@ using Photon.Pun;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TheGorillaWatch
 {
     [BepInPlugin("com.ArtificialGorillas.gorillatag.GorillaWatch", "GorillaWatch", "1.3.1")]
     public class Mod : BaseUnityPlugin
     {
-        bool inRoom;
-
         public static int counter;
 
         public static float PageCoolDown;
@@ -55,39 +54,42 @@ namespace TheGorillaWatch
         {
             Mods = new Dictionary<string, bool>()
             {
-                { "GorillaWatch!\nMade by:\nARTIFICIALGORILLAS", false },  //0 Done
-                { "PlatformGuy", false },                                  //1 Done
-                { "FrozoneGuy", false },                                   //2 Done
-                { "DrawingGuy", false },                                   //3 Done
-                { "NoClip", false },                                       //4 Done
-                { "HoverMonke", false },                                   //5 Done
-                { "VelocityFly", false },                                  //6 Done
-                { "HighGravity", false },                                  //7 Done
-                { "LowGravity", false },                                   //8 Done
-                { "NoGravity", false },                                    //9 Done
-                { "BigMonkers", false },                                   //10 Done
-                { "SmallMonkers", false },                                 //11 Done
-                { "MonkePunch", false },                                   //12 Done
-                { "MonkeBoing", false },                                   //13 Done
-                { "AirSwim", false },                                      //14 Done
+                { "GorillaWatch!\nMade by:\nARTIFICIALGORILLAS", false },
+                { "PlatformGuy", false },
+                { "FrozoneGuy", false },
+                { "DrawingGuy", false },
+                { "NoClip", false },
+                { "HoverMonke", false },
+                { "VelocityFly", false },
+                { "HighGravity", false },
+                { "LowGravity", false },
+                { "NoGravity", false },
+                { "BigMonkers", false },
+                { "SmallMonkers", false },
+                { "MonkePunch", false },
+                { "MonkeBoing", false },
+                { "AirSwim", false },
             };
             modCount = Mods.Count;
         }
-
+        GorillaHuntComputer huntComputer;
+        Text huntText;
         void Update()
         {
-            inRoom = inModded();
-            if (inRoom)
+            if (inModded())
             {
-                GorillaHuntComputer huntComputer = GorillaTagger.Instance.offlineVRRig.huntComputer.GetComponent<GorillaHuntComputer>();
                 if (!doneDeletion)
                 {
-                    GorillaTagger.Instance.offlineVRRig.EnableHuntWatch(true);
+                    huntComputer = GorillaTagger.Instance.offlineVRRig.huntComputer.GetComponent<GorillaHuntComputer>();
+                    huntText = huntComputer.text;
                     huntComputer.enabled = false;
-                    foreach(GameObject obj in huntComputer.transform.Find("HuntWatch_ScreenLocal/Canvas/Anchor"))
-                    {
-                        if (obj.name != "Text") GameObject.Destroy(obj);
-                    }
+                    huntComputer.gameObject.SetActive(true);
+                    GameObject.Destroy(huntComputer.material);
+                    GameObject.Destroy(huntComputer.badge);
+                    GameObject.Destroy(huntComputer.leftHand);
+                    GameObject.Destroy(huntComputer.rightHand);
+                    GameObject.Destroy(huntComputer.hat);
+                    GameObject.Destroy(huntComputer.face);
                     Debug.Log("GorillaWatch Has Loaded Successfully");
                     doneDeletion = true;
                 }
@@ -104,27 +106,21 @@ namespace TheGorillaWatch
                     counter--;
                     GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 1f);
                 }
-                if (ControllerInputPoller.instance.leftControllerSecondaryButton && Time.time > PageCoolDown + 0.5f)
-                {
-                    toggleWatch = !toggleWatch;
-                    PageCoolDown = Time.time;
 
-                    huntComputer.gameObject.SetActive(!toggleWatch);
-                }
                 if (counter < 0) counter = modCount;
 
                 if (counter > modCount) counter = 0;
 
                 if (counter != 0)
                 {
-                    huntComputer.text.text = $"{Mods.ElementAt(counter).Key}--{Mods.ElementAt(counter).Value.ToString()}";
+                    huntText.text = $"{Mods.ElementAt(counter).Key}--{Mods.ElementAt(counter).Value.ToString()}";
                     if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
                     {
                         PageCoolDown = Time.time;
                         Mods[Mods.ElementAt(counter).Key] = !Mods.ElementAt(counter).Value;
                         GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
                     }
-                }else huntComputer.text.text = Mods.ElementAt(counter).Key;
+                }else huntText.text = Mods.ElementAt(counter).Key;
 
                 #region Platform
                 if (Mods[Mods.ElementAt(1).Key])
