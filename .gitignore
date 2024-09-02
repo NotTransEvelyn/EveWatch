@@ -4,3 +4,4 @@
 
 /.vs
 /obj/Debug/netstandard2.1
+/obj
