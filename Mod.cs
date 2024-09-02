@@ -55,21 +55,21 @@ namespace TheGorillaWatch
         {
             Mods = new Dictionary<string, bool>()
             {
-                { "GorillaWatch!\nMade by:\nARTIFICIALGORILLAS", false }, 
-                { "PlatformGuy", false }, 
-                { "FrozoneGuy", false }, 
-                { "DrawingGuy", false }, 
-                { "NoClip", false }, 
-                { "HoverMonke", false }, 
-                { "VelocityFly", false }, 
-                { "HighGravity", false }, 
-                { "LowGravity", false }, 
-                { "NoGravity", false }, 
-                { "BigMonkers", false }, 
-                { "SmallMonkers", false }, 
-                { "MonkePunch", false }, 
-                { "MonkeBoing", false }, 
-                { "AirSwim", false },
+                { "GorillaWatch!\nMade by:\nARTIFICIALGORILLAS", false },  //0 Done
+                { "PlatformGuy", false },                                  //1 Done
+                { "FrozoneGuy", false },                                   //2 Done
+                { "DrawingGuy", false },                                   //3 Done
+                { "NoClip", false },                                       //4 Done
+                { "HoverMonke", false },                                   //5 Done
+                { "VelocityFly", false },                                  //6 Done
+                { "HighGravity", false },                                  //7
+                { "LowGravity", false },                                   //8 Done
+                { "NoGravity", false },                                    //9 Done
+                { "BigMonkers", false },                                   //10 Done
+                { "SmallMonkers", false },                                 //11 Done
+                { "MonkePunch", false },                                   //12 Done
+                { "MonkeBoing", false },                                   //13 Done
+                { "AirSwim", false },                                      //14 Done
             };
             modCount = Mods.Count;
         }
@@ -111,9 +111,9 @@ namespace TheGorillaWatch
 
                     huntComputer.gameObject.SetActive(!toggleWatch);
                 }
-                if (counter < 0) counter = 14;
+                if (counter < 0) counter = modCount;
 
-                if (counter > 14) counter = 0;
+                if (counter > modCount) counter = 0;
 
                 if (counter != 0)
                 {
@@ -125,9 +125,9 @@ namespace TheGorillaWatch
                         GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
                     }
                 }else huntComputer.text.text = Mods.ElementAt(counter).Key;
-                
 
-                if (ToggleMod1)
+                #region Platform
+                if (Mods[Mods.ElementAt(1).Key])
                 {
                     Vector3 leftOffset = new Vector3(0f, -0.06f, 0f);
 
@@ -176,13 +176,15 @@ namespace TheGorillaWatch
                             rightplat = null;
                         }
                     }
-                }
-                if (!ToggleMod1)
+                }else
                 {
                     GameObject.Destroy(leftplat);
                     GameObject.Destroy(rightplat);
                 }
-                if (ToggleMod12)
+                #endregion
+
+                #region Frozone
+                if (Mods[Mods.ElementAt(2).Key])
                 {
                     Vector3 leftOffset = new Vector3(0f, -0.06f, 0f);
                     Vector3 rightOffset = new Vector3(0f, -0.06f, 0f);
@@ -214,13 +216,15 @@ namespace TheGorillaWatch
                         GameObject.Destroy(FrozoneR, .2f);
                         GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().AddForce(AddForceStuff);
                     }
-                }
-                if (!ToggleMod12)
+                }else
                 {
                     GameObject.Destroy(FrozoneR);
                     GameObject.Destroy(Frozone);
                 }
-                if (ToggleMod13)
+                #endregion
+
+                #region Drawing
+                if (Mods[Mods.ElementAt(3).Key])
                 {
                     if (ControllerInputPoller.instance.leftGrab)
                     {
@@ -230,7 +234,6 @@ namespace TheGorillaWatch
                         DrawL.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                         DrawL.GetComponent<Renderer>().material.shader = Shader.Find("GorillaTag/UberShader");
                         DrawL.GetComponent<Renderer>().material.color = Color.black;
-                        GameObject.Destroy(DrawL.GetComponent<Rigidbody>());
                         GameObject.Destroy(DrawL.GetComponent<SphereCollider>());
                         GameObject.Destroy(DrawL, 10f);
                     }
@@ -248,39 +251,10 @@ namespace TheGorillaWatch
                         GameObject.Destroy(DrawR, 10f);
                     }
                 }
-                if (ToggleMod6)
-                {
-                    if (ControllerInputPoller.instance.leftControllerGripFloat > .5)
-                    {
-                        GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(10 * GorillaTagger.Instance.offlineVRRig.transform.Find("rig/body/shoulder.L/upper_arm.L/forearm.L/hand.L").right, ForceMode.Acceleration);
-                        GorillaTagger.Instance.StartVibration(true, GorillaTagger.Instance.tapHapticStrength / 50f * GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.velocity.magnitude, GorillaTagger.Instance.tapHapticDuration);
-                    }
-                    if (ControllerInputPoller.instance.rightControllerGripFloat > .5)
-                    {
-                        GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(10 * -GorillaTagger.Instance.offlineVRRig.transform.Find("rig/body/shoulder.R/upper_arm.R/forearm.R/hand.R").right, ForceMode.Acceleration);
-                        GorillaTagger.Instance.StartVibration(false, GorillaTagger.Instance.tapHapticStrength / 50f * GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.velocity.magnitude, GorillaTagger.Instance.tapHapticDuration);
-                    }
-                }
-                if (ToggleMod2)
-                {
-                    if (ControllerInputPoller.instance.leftControllerPrimaryButton)
-                    {
-                        GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().velocity = GorillaLocomotion.Player.Instance.headCollider.transform.forward * Time.deltaTime * 1400f;
-                    }
-                }
-                if (ToggleMod5)
-                {
-                    GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().AddForce(Vector3.up * 10f, ForceMode.Acceleration);
-                }
-                if (ToggleMod3)
-                {
-                    GorillaLocomotion.Player.Instance.scale = 2f;
-                }
-                if (ToggleMod4)
-                {
-                    GorillaLocomotion.Player.Instance.scale = .5f;
-                }
-                if (ToggleMod8)
+                #endregion
+
+                #region NoClip
+                if (Mods[Mods.ElementAt(4).Key])
                 {
                     MeshCollider[] array = Resources.FindObjectsOfTypeAll<MeshCollider>();
                     foreach (MeshCollider meshCollider in array)
@@ -296,50 +270,71 @@ namespace TheGorillaWatch
                         meshCollider2.enabled = true;
                     }
                 }
-                if (ToggleMod9)
+                #endregion
+
+                #region HoverMonke
+                if (Mods[Mods.ElementAt(5).Key])
                 {
-                    bounce = GorillaLocomotion.Player.Instance.bodyCollider.material.bounciness;
-                    PMCombine = GorillaLocomotion.Player.Instance.bodyCollider.material.bounceCombine;
-                    GorillaLocomotion.Player.Instance.bodyCollider.material.bounceCombine = PhysicMaterialCombine.Maximum;
-                    GorillaLocomotion.Player.Instance.bodyCollider.material.bounciness = 1.0f;
+                    if (ControllerInputPoller.instance.leftControllerPrimaryButton)
+                    {
+                        GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.velocity = GorillaLocomotion.Player.Instance.headCollider.transform.forward * Time.deltaTime * 1400f;
+                    }
                 }
-                if (!ToggleMod9)
+                #endregion
+
+                #region VelocityFly
+                if (Mods[Mods.ElementAt(6).Key])
                 {
-                    bounce = GorillaLocomotion.Player.Instance.bodyCollider.material.bounciness;
-                    PMCombine = GorillaLocomotion.Player.Instance.bodyCollider.material.bounceCombine;
-                    GorillaLocomotion.Player.Instance.bodyCollider.material.bounceCombine = PhysicMaterialCombine.Maximum;
-                    GorillaLocomotion.Player.Instance.bodyCollider.material.bounciness = 0f;
+                    if (ControllerInputPoller.instance.leftControllerGripFloat > .5)
+                    {
+                        GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(10 * GorillaTagger.Instance.offlineVRRig.transform.Find("rig/body/shoulder.L/upper_arm.L/forearm.L/hand.L").right, ForceMode.Acceleration);
+                        GorillaTagger.Instance.StartVibration(true, GorillaTagger.Instance.tapHapticStrength / 50f * GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.velocity.magnitude, GorillaTagger.Instance.tapHapticDuration);
+                    }
+                    if (ControllerInputPoller.instance.rightControllerGripFloat > .5)
+                    {
+                        GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(10 * -GorillaTagger.Instance.offlineVRRig.transform.Find("rig/body/shoulder.R/upper_arm.R/forearm.R/hand.R").right, ForceMode.Acceleration);
+                        GorillaTagger.Instance.StartVibration(false, GorillaTagger.Instance.tapHapticStrength / 50f * GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.velocity.magnitude, GorillaTagger.Instance.tapHapticDuration);
+                    }
                 }
-                if (ToggleMod10)
-                {
-                    GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(Vector3.up * (Time.deltaTime * (6.66f / Time.deltaTime)), ForceMode.Acceleration);
-                }
-                if (ToggleMod11)
+                #endregion
+
+                #region High Gravity
+                if (Mods[Mods.ElementAt(7).Key])
                 {
                     GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(Vector3.down * (Time.deltaTime * (7.77f / Time.deltaTime)), ForceMode.Acceleration);
                 }
-                if (ToggleMod14)
+                #endregion
+
+                #region Low Gravity
+                if (Mods[Mods.ElementAt(8).Key])
                 {
-                    if (Swim == null)
-                    {
-                        Swim = UnityEngine.Object.Instantiate<GameObject>(GameObject.Find("Environment Objects/LocalObjects_Prefab/ForestToBeach/ForestToBeach_Prefab_V4/CaveWaterVolume"));
-                        Swim.transform.localScale = new Vector3(5f, 5f, 5f);
-                        Swim.GetComponent<Renderer>().enabled = false;
-                    }
-                    else
-                    {
-                        GorillaLocomotion.Player.Instance.audioManager.UnsetMixerSnapshot(0.1f);
-                        Swim.transform.position = GorillaTagger.Instance.headCollider.transform.position + new Vector3(0f, 2.5f, 0f);
-                    }
+                    GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(Vector3.up * 10f, ForceMode.Acceleration);
                 }
-                else
+                #endregion
+
+                #region No Gravity
+                if (Mods[Mods.ElementAt(9).Key])
                 {
-                    if (Swim != null)
-                    {
-                        UnityEngine.Object.Destroy(Swim);
-                    }
+                    GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(Vector3.up * (Time.deltaTime * (6.66f / Time.deltaTime)), ForceMode.Acceleration);
                 }
-                if (ToggleMod15)
+                #endregion
+
+                #region BigMonk
+                if (Mods[Mods.ElementAt(10).Key])
+                {
+                    GorillaLocomotion.Player.Instance.scale = 2f;
+                }
+                #endregion
+
+                #region SmallMonk
+                if (Mods[Mods.ElementAt(11).Key])
+                {
+                    GorillaLocomotion.Player.Instance.scale = .5f;
+                }
+                #endregion
+
+                #region Monke Punch
+                if (Mods[Mods.ElementAt(12).Key])
                 {
                     int index = -1;
                     foreach (VRRig vrrig in GorillaParent.instance.vrrigs)
@@ -369,6 +364,45 @@ namespace TheGorillaWatch
                         }
                     }
                 }
+                #endregion
+
+                #region BouncyMonk
+                if (Mods[Mods.ElementAt(13).Key])
+                {
+                    bounce = GorillaLocomotion.Player.Instance.bodyCollider.material.bounciness;
+                    PMCombine = GorillaLocomotion.Player.Instance.bodyCollider.material.bounceCombine;
+                    GorillaLocomotion.Player.Instance.bodyCollider.material.bounceCombine = PhysicMaterialCombine.Maximum;
+                    GorillaLocomotion.Player.Instance.bodyCollider.material.bounciness = 1.0f;
+                }
+                if (!Mods[Mods.ElementAt(13).Key])
+                {
+                    bounce = GorillaLocomotion.Player.Instance.bodyCollider.material.bounciness;
+                    PMCombine = GorillaLocomotion.Player.Instance.bodyCollider.material.bounceCombine;
+                    GorillaLocomotion.Player.Instance.bodyCollider.material.bounceCombine = PhysicMaterialCombine.Maximum;
+                    GorillaLocomotion.Player.Instance.bodyCollider.material.bounciness = 0f;
+                }
+                #endregion
+
+                #region Swim
+                if (Mods[Mods.ElementAt(14).Key])
+                {
+                    if (Swim == null)
+                    {
+                        Swim = UnityEngine.Object.Instantiate<GameObject>(GameObject.Find("Environment Objects/LocalObjects_Prefab/ForestToBeach/ForestToBeach_Prefab_V4/CaveWaterVolume"));
+                        Swim.transform.localScale = new Vector3(5f, 5f, 5f);
+                        Swim.GetComponent<Renderer>().enabled = false;
+                    }
+                    else
+                    {
+                        GorillaLocomotion.Player.Instance.audioManager.UnsetMixerSnapshot(0.1f);
+                        Swim.transform.position = GorillaTagger.Instance.headCollider.transform.position + new Vector3(0f, 2.5f, 0f);
+                    }
+                }
+                else if (Swim != null)
+                {
+                    UnityEngine.Object.Destroy(Swim);
+                }
+                #endregion
             }
         }
 
