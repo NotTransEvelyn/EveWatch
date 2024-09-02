@@ -23,34 +23,35 @@ namespace TheGorillaWatch
         {
             Mods = new Dictionary<Mod, bool>()
             {
-                { new Mod("Gorilla Watch!", "Triggers To Switch Pages\nA To Toggle.", Empty, Empty, Empty), false },
-                { new Mod("Platforms","Press grip to use them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
-                { new Mod("Frozone", "Press grip to spawn slip plats!", Empty, Movement.Frozone, Empty), false },
-                { new Mod("Drawing", "Press grip to draw!", Empty, Movement.Drawing, Empty), false },
-                { new Mod("Noclip", "Disables every collider!\n(Plats suggested)", Movement.Noclip, Empty, Movement.NoclipDisable), false },
-                { new Mod("Flight", "Press X to fly!", Empty, Movement.Fly, Empty), false },
-                { new Mod("Iron Monk", "Press GRIP to fly like iron man!", Empty, Movement.IronMonk, Empty), false },
-                { new Mod("High Gravity", "Makes you have higher gravity!", Empty, Gravity.HighGravity, Gravity.ResetGravity), false },
-                { new Mod("Low Gravity", "Makes you have lower gravity!", Empty, Gravity.LowGravity, Gravity.ResetGravity), false },
-                { new Mod("No Gravity", "Makes you have no gravity!", Empty, Gravity.NoGravity, Gravity.ResetGravity), false },
-                { new Mod("Big Monk", "Makes your monke bigger!", Empty, Size.BigMonke, Empty), false },
-                { new Mod("Small Monk", "Makes your monke smaller!", Empty, Size.SmallMonke, Empty), false },
-                { new Mod("Monke Punch", "Lets you be punched around by other players!", Empty, Multiplayer.Punch, Empty), false },
-                { new Mod("Monke Boing", "Makes the ground bouncy!", Movement.Bounce, Empty, Movement.StopBounce), false },
-                { new Mod("Air Swim", "Swim everywhere!", Empty, Movement.Swim, Movement.StopSwim), false },
+                { new Mod("Gorilla Watch!", "Triggers To\nSwitch Pages\nA To Toggle.", Empty, Empty, Empty), false },
+                { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
+                { new Mod("Frozone", "Press grip to\nspawn slip plats!", Empty, Movement.Frozone, Empty), false },
+                { new Mod("Drawing", "Press grip to\ndraw!", Empty, Movement.Drawing, Empty), false },
+                { new Mod("Noclip", "Disables every\ncollider!\n(Plats suggested)", Movement.Noclip, Empty, Movement.NoclipDisable), false },
+                { new Mod("Flight", "Press X to\nfly!", Empty, Movement.Fly, Empty), false },
+                { new Mod("Iron Monk", "Press grip to\nfly like iron\nman!", Empty, Movement.IronMonk, Empty), false },
+                { new Mod("High Gravity", "Makes you have\nhigher gravity!", Empty, Gravity.HighGravity, Gravity.ResetGravity), false },
+                { new Mod("Low Gravity", "Makes you have\nlower gravity!", Empty, Gravity.LowGravity, Gravity.ResetGravity), false },
+                { new Mod("No Gravity", "Makes you have\nno gravity!", Empty, Gravity.NoGravity, Gravity.ResetGravity), false },
+                { new Mod("Big Monk", "Makes your\nmonke bigger!", Empty, Size.BigMonke, Empty), false },
+                { new Mod("Small Monk", "Makes your\nmonke smaller!", Empty, Size.SmallMonke, Empty), false },
+                { new Mod("Monke Punch", "Lets you be\npunched around\nby other players!", Empty, Multiplayer.Punch, Empty), false },
+                { new Mod("Monke Boing", "Makes the\nground bouncy!", Movement.Bounce, Empty, Movement.StopBounce), false },
+                { new Mod("Air Swim", "Swim\neverywhere!", Empty, Movement.Swim, Movement.StopSwim), false },
             };
-            modCount = Mods.Count;
+            modCount = Mods.Count - 1;
         }
         GorillaHuntComputer huntComputer;
         Text huntText;
         void Update()
         {
+            huntComputer = GorillaTagger.Instance.offlineVRRig.huntComputer.GetComponent<GorillaHuntComputer>();
             if (InModded())
             {
                 if (!doneDeletion)
                 {
-                    huntComputer = GorillaTagger.Instance.offlineVRRig.huntComputer.GetComponent<GorillaHuntComputer>();
                     huntText = huntComputer.text;
+                    huntText.transform.localPosition = new Vector3(0.033f, -0.0026f, 0);
                     huntText.rectTransform.sizeDelta = new Vector2(160f, 60f);
                     huntComputer.enabled = false;
                     Destroy(huntComputer.material);
@@ -100,7 +101,7 @@ namespace TheGorillaWatch
                         modInfo.Key.StayEnabledMethod();
                     }
                 }
-            }else huntComputer.gameObject.SetActive(true);
+            }else huntComputer.gameObject.SetActive(false);
         }
         void Empty(){} //Used for the mods and if you want them to be empty!
 
