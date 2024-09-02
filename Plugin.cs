@@ -51,6 +51,7 @@ namespace TheGorillaWatch
                 {
                     huntComputer = GorillaTagger.Instance.offlineVRRig.huntComputer.GetComponent<GorillaHuntComputer>();
                     huntText = huntComputer.text;
+                    huntText.rectTransform.sizeDelta = new Vector2(160f, 60f);
                     huntComputer.enabled = false;
                     Destroy(huntComputer.material);
                     Destroy(huntComputer.badge);
