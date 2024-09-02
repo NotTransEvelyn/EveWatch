@@ -62,7 +62,7 @@ namespace TheGorillaWatch
                 { "NoClip", false },                                       //4 Done
                 { "HoverMonke", false },                                   //5 Done
                 { "VelocityFly", false },                                  //6 Done
-                { "HighGravity", false },                                  //7
+                { "HighGravity", false },                                  //7 Done
                 { "LowGravity", false },                                   //8 Done
                 { "NoGravity", false },                                    //9 Done
                 { "BigMonkers", false },                                   //10 Done
