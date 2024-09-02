@@ -64,13 +64,13 @@ namespace TheGorillaWatch
                 }
                 huntComputer.gameObject.SetActive(true);
 
-                if ((ControllerInputPoller.instance.rightControllerIndexFloat >= .5f || Keyboard.current.rightArrowKey.wasPressedThisFrame) && Time.time > PageCoolDown + 0.5)
+                if ((ControllerInputPoller.instance.rightControllerIndexFloat >= .5f || Keyboard.current.rightArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
                 {
                     PageCoolDown = Time.time;
                     counter++;
                     GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 1f);
                 }
-                if ((ControllerInputPoller.instance.leftControllerIndexFloat >= .5f || Keyboard.current.leftArrowKey.wasPressedThisFrame) && Time.time > PageCoolDown + 0.5)
+                if ((ControllerInputPoller.instance.leftControllerIndexFloat >= .5f || Keyboard.current.leftArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
                 {
                     PageCoolDown = Time.time;
                     counter--;
@@ -83,7 +83,7 @@ namespace TheGorillaWatch
                 if (counter != 0)
                 {
                     huntText.text = $"{Mods.ElementAt(counter).Key.Name}:\n{Mods.ElementAt(counter).Value}.\n{Mods.ElementAt(counter).Key.Desc}".ToUpper();
-                    if ((ControllerInputPoller.instance.rightControllerPrimaryButton || Keyboard.current.enterKey.wasPressedThisFrame) && Time.time > PageCoolDown + .5)
+                    if ((ControllerInputPoller.instance.rightControllerPrimaryButton || Keyboard.current.enterKey.isPressed) && Time.time > PageCoolDown + .5)
                     {
                         PageCoolDown = Time.time;
                         Mods[Mods.ElementAt(counter).Key] = !Mods.ElementAt(counter).Value;
