@@ -1,5 +1,7 @@
 using BepInEx;
 using Photon.Pun;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TheGorillaWatch
@@ -23,37 +25,9 @@ namespace TheGorillaWatch
 
         PhysicMaterialCombine PMCombine;
 
-        public static bool ToggleMod1;
+        int modCount;
 
-        public static bool ToggleMod2;
-
-        public static bool ToggleMod3;
-
-        public static bool ToggleMod4;
-
-        public static bool ToggleMod5;
-
-        public static bool ToggleMod6;
-
-        public static bool ToggleMod7;
-
-        public static bool ToggleMod8;
-
-        public static bool ToggleMod9;
-
-        public static bool ToggleMod10;
-
-        public static bool ToggleMod11;
-
-        public static bool ToggleMod12;
-
-        public static bool ToggleMod13;
-
-        public static bool ToggleMod14;
-
-        public static bool ToggleMod15;
-
-        public static bool ToggleMod16;
+        public static Dictionary<string, bool> Mods;
 
         public static GameObject leftplat = null;
 
@@ -76,6 +50,29 @@ namespace TheGorillaWatch
 
         Vector3 AddForceStuff = new Vector3(0f, 40f, 0f);
         bool doneDeletion;
+
+        void Start()
+        {
+            Mods = new Dictionary<string, bool>()
+            {
+                { "GorillaWatch!\nMade by:\nARTIFICIALGORILLAS", false }, 
+                { "PlatformGuy", false }, 
+                { "FrozoneGuy", false }, 
+                { "DrawingGuy", false }, 
+                { "NoClip", false }, 
+                { "HoverMonke", false }, 
+                { "VelocityFly", false }, 
+                { "HighGravity", false }, 
+                { "LowGravity", false }, 
+                { "NoGravity", false }, 
+                { "BigMonkers", false }, 
+                { "SmallMonkers", false }, 
+                { "MonkePunch", false }, 
+                { "MonkeBoing", false }, 
+                { "AirSwim", false },
+            };
+            modCount = Mods.Count;
+        }
 
         void Update()
         {
@@ -118,166 +115,16 @@ namespace TheGorillaWatch
 
                 if (counter > 14) counter = 0;
 
-                switch (counter)
+                if (counter != 0)
                 {
-                    case 0:
-                        huntComputer.text.text = "GorillaWatch!\nMade by:\nARTIFICIALGORILLAS";
-                        break;
-
-                    case 1:
-                        huntComputer.text.text = "PlatformGuy--" + ToggleMod1.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod1 = !ToggleMod1;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("You Have Platforms");
-                        }
-                        break;
-
-                    case 2:
-                        huntComputer.text.text = "FrozoneGuy--" + ToggleMod12.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod12 = !ToggleMod12;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("Frozone!");
-                        }
-                        break;
-                    
-                    case 3:
-                        huntComputer.text.text = "DrawingGuy-- " + ToggleMod13.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod13 = !ToggleMod13;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("Now, you can draw!");
-                        }
-                        break;
-
-                    case 4:
-                        huntComputer.text.text = "NoClip-- " + ToggleMod8.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod8 = !ToggleMod8;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("Noclip, Go through the map!");
-                        }
-                        break;
-
-                    case 5:
-                        huntComputer.text.text = "HoverMonke-- " + ToggleMod6.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            ToggleMod6 = !ToggleMod6;
-                            Debug.Log("You can hover now!");
-                        }
-                        break;
-
-                    case 6:
-                        huntComputer.text.text = "VelocityFly-- " + ToggleMod2.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod2 = !ToggleMod2;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("FLY");
-                        }
-                        break;
-
-                    case 7:
-                        huntComputer.text.text = "HighGravity-- " + ToggleMod11.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod11 = !ToggleMod11;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("Woah! Are we on da sun? high gravity");
-                        }
-                        break;
-
-                    case 8:
-                        huntComputer.text.text = "LowGravity-- " + ToggleMod10.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod10 = !ToggleMod10;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("Moon Grav");
-                        }
-                        break;
-
-                    case 9:
-                        huntComputer.text.text = "NoGravity-- " + ToggleMod5.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod5 = !ToggleMod5;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("No GRAVITY");
-                        }
-                        break;
-
-                    case 10:
-                        huntComputer.text.text = "BigMonkers---" + ToggleMod3.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod3 = !ToggleMod3;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("Become BIGGA");
-                        }
-                        break;
-
-                    case 11:
-                        huntComputer.text.text = "SmallMonkers--" + ToggleMod4.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod4 = !ToggleMod4;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("Become SMALLA");
-                        }
-                        break;
-
-                    case 12:
-                        huntComputer.text.text = "MonkePunch-- " + ToggleMod15.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod15 = !ToggleMod15;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("Swim Everywhere");
-                        }
-                        break;
-
-                    case 13:
-                        huntComputer.text.text = "MonkeBoing-- " + ToggleMod9.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod9 = !ToggleMod9;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("Go BOING BOING BOING");
-                        }
-                        break;
-
-                    case 14:
-                        huntComputer.text.text = "AirSwim-- " + ToggleMod14.ToString();
-                        if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
-                        {
-                            PageCoolDown = Time.time;
-                            ToggleMod14 = !ToggleMod14;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                            Debug.Log("Swim Everywhere");
-                        }
-                        break;
-                }
+                    huntComputer.text.text = $"{Mods.ElementAt(counter).Key}--{Mods.ElementAt(counter).Value.ToString()}";
+                    if (ControllerInputPoller.instance.rightControllerPrimaryButton && Time.time > PageCoolDown + .5)
+                    {
+                        PageCoolDown = Time.time;
+                        Mods[Mods.ElementAt(counter).Key] = !Mods.ElementAt(counter).Value;
+                        GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
+                    }
+                }else huntComputer.text.text = Mods.ElementAt(counter).Key;
                 
 
                 if (ToggleMod1)
