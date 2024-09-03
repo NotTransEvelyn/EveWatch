@@ -133,7 +133,12 @@ namespace EveWatch
 
         void OnGUI()
         {
-            GUI.Label(new Rect(0, 0, 2000000, 200000), huntText.text);
+            if (!hideAndLock)
+            {
+                GUIStyle style = new GUIStyle();
+                style.font = huntText.font;
+                GUI.Label(new Rect(0, 0, 200000000, 20000000), huntText.text, style);
+            }
         }
 
         bool InModded()
