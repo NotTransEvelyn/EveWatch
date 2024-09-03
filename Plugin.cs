@@ -60,7 +60,7 @@ namespace EveWatch
                     Destroy(huntComputer.rightHand);
                     Destroy(huntComputer.hat);
                     Destroy(huntComputer.face);
-                    foreach(GameObject obj in huntComputer.badge.transform.parent)
+                    foreach(GameObject obj in huntComputer.material.transform.parent)
                     {
                         if (obj.name != "Text" && obj.name != "Material") Destroy(obj);
                     }
