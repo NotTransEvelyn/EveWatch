@@ -41,7 +41,7 @@ namespace EveWatch
         void Update()
         {
             huntComputer = GorillaTagger.Instance.offlineVRRig.huntComputer.GetComponent<GorillaHuntComputer>();
-            if (InModded())
+            if (InModded() && GorillaTagger.Instance.offlineVRRig != null)
             {
                 if (!doneDeletion)
                 {
