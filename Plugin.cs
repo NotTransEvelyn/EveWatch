@@ -24,7 +24,7 @@ namespace EveWatch
             Mods = new Dictionary<Mod, bool>()
             {
                 { new Mod("Eve Watch!", "X To Toggle Mods.\nY To Lock.", Empty, Empty, Empty), false },
-                { new Mod("Disconnect","Makes you leave the lobby!", delegate{ NetworkSystem.Instance.ReturnToSinglePlayer(); }, Empty, Empty), false },
+                { new Mod("Disconnect","Makes you leave\nthe lobby!", delegate{ NetworkSystem.Instance.ReturnToSinglePlayer(); }, Empty, Empty), false },
                 { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
                 { new Mod("Frozone", "Press grip to\nspawn slip plats!", Empty, Movement.Frozone, Empty), false },
                 { new Mod("Noclip", "Disables every\ncollider!\n(Plats suggested)", Movement.Noclip, Empty, Movement.NoclipDisable), false },
