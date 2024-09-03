@@ -24,6 +24,7 @@ namespace EveWatch
             Mods = new Dictionary<Mod, bool>()
             {
                 { new Mod("Eve Watch!", "X To Toggle Mods.\nY To Lock.", Empty, Empty, Empty), false },
+                { new Mod("Disconnect","Makes you leave the lobby!", delegate{ NetworkSystem.Instance.ReturnToSinglePlayer(); }, Empty, Empty), false },
                 { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
                 { new Mod("Frozone", "Press grip to\nspawn slip plats!", Empty, Movement.Frozone, Empty), false },
                 { new Mod("Noclip", "Disables every\ncollider!\n(Plats suggested)", Movement.Noclip, Empty, Movement.NoclipDisable), false },
@@ -93,8 +94,13 @@ namespace EveWatch
                         if ((ControllerInputPoller.instance.leftControllerPrimaryButton || Keyboard.current.enterKey.isPressed) && Time.time > PageCoolDown + .5)
                         {
                             PageCoolDown = Time.time;
-                            Mods[Mods.ElementAt(counter).Key] = !Mods.ElementAt(counter).Value;
                             GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
+                            if (counter == 1)
+                            {
+                                Mods.ElementAt(counter).Key.OnEnabledMethod();
+                                return;
+                            }
+                            Mods[Mods.ElementAt(counter).Key] = !Mods.ElementAt(counter).Value;
                             if (Mods[Mods.ElementAt(counter).Key]) Mods.ElementAt(counter).Key.OnEnabledMethod();
                             else Mods.ElementAt(counter).Key.OnDisabledMethod();
                         }
