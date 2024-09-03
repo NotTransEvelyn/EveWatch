@@ -14,7 +14,7 @@ namespace EveWatch.Mods
 
             Vector3 rightOffset = new Vector3(0f, -0.06f, 0f);
 
-            Color playerColor = GorillaTagger.Instance.offlineVRRig.mainSkin.material.color;
+            Color playerColor = GorillaTagger.Instance.offlineVRRig.playerColor;
 
             if (ControllerInputPoller.instance.leftGrab)
             {
@@ -127,7 +127,7 @@ namespace EveWatch.Mods
         #region Flight
         public static void Fly()
         {
-            if (ControllerInputPoller.instance.leftControllerPrimaryButton)
+            if (ControllerInputPoller.instance.rightControllerPrimaryButton)
             {
                 GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.velocity = GorillaLocomotion.Player.Instance.headCollider.transform.forward * Time.deltaTime * 1400f;
             }

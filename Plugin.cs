@@ -27,7 +27,7 @@ namespace EveWatch
                 { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
                 { new Mod("Frozone", "Press grip to\nspawn slip plats!", Empty, Movement.Frozone, Empty), false },
                 { new Mod("Noclip", "Disables every\ncollider!\n(Plats suggested)", Movement.Noclip, Empty, Movement.NoclipDisable), false },
-                { new Mod("Flight", "Press X to\nfly!", Empty, Movement.Fly, Empty), false },
+                { new Mod("Flight", "Press A to\nfly!", Empty, Movement.Fly, Empty), false },
                 { new Mod("Iron Monk", "Press grip to\nfly like iron\nman!", Empty, Movement.IronMonk, Empty), false }
             };
             modCount = Mods.Count - 1;
