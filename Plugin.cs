@@ -23,18 +23,20 @@ namespace EveWatch
         {
             Mods = new Dictionary<Mod, bool>()
             {
-                { new Mod("Eve Watch!", "Triggers To\nSwitch Pages\nA To Toggle.", Empty, Empty, Empty), false },
+                { new Mod("Eve Watch!", "X To Toggle Mods.\nY To Lock.", Empty, Empty, Empty), false },
                 { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
                 { new Mod("Frozone", "Press grip to\nspawn slip plats!", Empty, Movement.Frozone, Empty), false },
                 { new Mod("Noclip", "Disables every\ncollider!\n(Plats suggested)", Movement.Noclip, Empty, Movement.NoclipDisable), false },
                 { new Mod("Flight", "Press X to\nfly!", Empty, Movement.Fly, Empty), false },
-                { new Mod("Iron Monk", "Press grip to\nfly like iron\nman!", Empty, Movement.IronMonk, Empty), false },
-                { new Mod("Air Swim", "Swim\neverywhere!", Empty, Movement.Swim, Movement.StopSwim), false },
+                { new Mod("Iron Monk", "Press grip to\nfly like iron\nman!", Empty, Movement.IronMonk, Empty), false }
             };
             modCount = Mods.Count - 1;
         }
         GorillaHuntComputer huntComputer;
         Text huntText;
+        bool lookedAtMainPage;
+        bool lastY;
+        bool hideAndLock;
         void Update()
         {
             huntComputer = GorillaTagger.Instance.offlineVRRig.huntComputer.GetComponent<GorillaHuntComputer>();
@@ -62,39 +64,53 @@ namespace EveWatch
                     Debug.Log("EveWatch Has Loaded Successfully");
                     doneDeletion = true;
                 }
-                huntComputer.gameObject.SetActive(true);
 
-                if ((ControllerInputPoller.instance.rightControllerIndexFloat >= .5f || Keyboard.current.rightArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
-                {
-                    PageCoolDown = Time.time;
-                    counter++;
-                    GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 1f);
-                }
-                if ((ControllerInputPoller.instance.leftControllerIndexFloat >= .5f || Keyboard.current.leftArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
-                {
-                    PageCoolDown = Time.time;
-                    counter--;
-                    GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 1f);
-                }
+                if ((ControllerInputPoller.instance.leftControllerSecondaryButton && !lastY) || Keyboard.current.hKey.wasPressedThisFrame) hideAndLock = !hideAndLock;
 
-                if (counter < 0) counter = modCount;
-                if (counter > modCount) counter = 0;
-
-                if (counter != 0)
+                if (!hideAndLock)
                 {
-                    huntText.text = $"{Mods.ElementAt(counter).Key.Name} ({counter}/{modCount})\n{Mods.ElementAt(counter).Key.Desc}".ToUpper();
-                    if ((ControllerInputPoller.instance.rightControllerPrimaryButton || Keyboard.current.enterKey.isPressed) && Time.time > PageCoolDown + .5)
+                    huntComputer.gameObject.SetActive(true);
+                    if ((ControllerInputPoller.instance.leftControllerIndexFloat >= .5f || Keyboard.current.rightArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
                     {
                         PageCoolDown = Time.time;
-                        Mods[Mods.ElementAt(counter).Key] = !Mods.ElementAt(counter).Value;
-                        GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
-                        if (Mods[Mods.ElementAt(counter).Key]) Mods.ElementAt(counter).Key.OnEnabledMethod();
-                        else Mods.ElementAt(counter).Key.OnDisabledMethod();
+                        counter++;
+                        lookedAtMainPage = true;
+                        GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 1f);
                     }
-                }else huntText.text = Mods.ElementAt(counter).Key.Name + "\n" + Mods.ElementAt(counter).Key.Desc;
+                    if ((ControllerInputPoller.instance.leftControllerGripFloat >= .5f || Keyboard.current.leftArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
+                    {
+                        PageCoolDown = Time.time;
+                        counter--;
+                        lookedAtMainPage = true;
+                        GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 1f);
+                    }
+                    if (counter < (lookedAtMainPage ? 1 : 0)) counter = modCount;
+                    if (counter > modCount) counter = (lookedAtMainPage ? 1 : 0);
 
-                if (Mods.ElementAt(counter).Value) huntComputer.material.material.color = Color.green;
-                else huntComputer.material.material.color = new Color(1, 0, 0, 255);
+                    if (counter != 0)
+                    {
+                        huntText.text = $"{Mods.ElementAt(counter).Key.Name} ({counter}/{modCount})\n{Mods.ElementAt(counter).Key.Desc}".ToUpper();
+                        if ((ControllerInputPoller.instance.leftControllerPrimaryButton || Keyboard.current.enterKey.isPressed) && Time.time > PageCoolDown + .5)
+                        {
+                            PageCoolDown = Time.time;
+                            Mods[Mods.ElementAt(counter).Key] = !Mods.ElementAt(counter).Value;
+                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
+                            if (Mods[Mods.ElementAt(counter).Key]) Mods.ElementAt(counter).Key.OnEnabledMethod();
+                            else Mods.ElementAt(counter).Key.OnDisabledMethod();
+                        }
+                    }
+                    else huntText.text = Mods.ElementAt(counter).Key.Name + "\n" + Mods.ElementAt(counter).Key.Desc;
+
+                    if (counter == 0) huntComputer.material.enabled = false;
+                    else huntComputer.material.enabled = true;
+
+                    if (Mods.ElementAt(counter).Value) huntComputer.material.material.color = Color.green;
+                    else huntComputer.material.material.color = new Color(1, 0, 0, 255);
+                }
+                else
+                {
+                    huntComputer.gameObject.SetActive(false);
+                }
 
                 foreach (var modInfo in Mods)
                 {
@@ -103,6 +119,8 @@ namespace EveWatch
                         modInfo.Key.StayEnabledMethod();
                     }
                 }
+
+                lastY = ControllerInputPoller.instance.leftControllerSecondaryButton;
             }else huntComputer.gameObject.SetActive(false);
         }
         void Empty(){} //Used for the mods and if you want them to be empty!

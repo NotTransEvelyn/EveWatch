@@ -104,39 +104,6 @@ namespace EveWatch.Mods
         }
         #endregion
 
-        #region Drawing
-        static GameObject DrawR = null;
-
-        static GameObject DrawL = null;
-        public static void Drawing()
-        {
-            if (ControllerInputPoller.instance.leftGrab)
-            {
-                DrawL = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                DrawL.transform.position = GorillaLocomotion.Player.Instance.leftControllerTransform.position;
-                DrawL.transform.rotation = GorillaLocomotion.Player.Instance.leftControllerTransform.rotation;
-                DrawL.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-                DrawL.GetComponent<Renderer>().material.shader = Shader.Find("GorillaTag/UberShader");
-                DrawL.GetComponent<Renderer>().material.color = Color.black;
-                GameObject.Destroy(DrawL.GetComponent<SphereCollider>());
-                GameObject.Destroy(DrawL, 10f);
-            }
-
-            if (ControllerInputPoller.instance.rightGrab)
-            {
-                DrawR = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                DrawR.transform.position = GorillaLocomotion.Player.Instance.rightControllerTransform.position;
-                DrawR.transform.rotation = GorillaLocomotion.Player.Instance.rightControllerTransform.rotation;
-                DrawR.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-                DrawR.GetComponent<Renderer>().material.shader = Shader.Find("GorillaTag/UberShader");
-                DrawR.GetComponent<Renderer>().material.color = Color.cyan;
-                GameObject.Destroy(DrawR.GetComponent<Rigidbody>());
-                GameObject.Destroy(DrawR.GetComponent<SphereCollider>());
-                GameObject.Destroy(DrawR, 10f);
-            }
-        }
-        #endregion
-
         #region Noclip
         public static void Noclip()
         {
@@ -180,34 +147,6 @@ namespace EveWatch.Mods
                 GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(10 * -GorillaTagger.Instance.offlineVRRig.transform.Find("rig/body/shoulder.R/upper_arm.R/forearm.R/hand.R").right, ForceMode.Acceleration);
                 GorillaTagger.Instance.StartVibration(false, GorillaTagger.Instance.tapHapticStrength / 50f * GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.velocity.magnitude, GorillaTagger.Instance.tapHapticDuration);
             }
-        }
-        #endregion
-
-        #region Bounce
-        public static void Bounce() => GorillaLocomotion.Player.Instance.bodyCollider.material.bounciness = 1.0f;
-        public static void StopBounce() => GorillaLocomotion.Player.Instance.bodyCollider.material.bounciness = 0f;
-        #endregion
-
-        #region Swim
-        static GameObject swim;
-        public static void Swim()
-        {
-            if (swim == null)
-            {
-                swim = Object.Instantiate(GameObject.Find("Environment Objects/LocalObjects_Prefab/ForestToBeach/ForestToBeach_Prefab_V4/CaveWaterVolume"));
-                swim.transform.localScale = new Vector3(50f, 50f, 50f);
-                swim.GetComponent<Renderer>().enabled = false;
-            }
-            else
-            {
-                GorillaLocomotion.Player.Instance.audioManager.UnsetMixerSnapshot(0.1f);
-                swim.transform.position = GorillaTagger.Instance.headCollider.transform.position + new Vector3(0f, 2.5f, 0f);
-            }
-        }
-
-        public static void StopSwim()
-        {
-            GameObject.Destroy(swim);
         }
         #endregion
     }
