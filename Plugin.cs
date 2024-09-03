@@ -26,17 +26,9 @@ namespace EveWatch
                 { new Mod("Eve Watch!", "Triggers To\nSwitch Pages\nA To Toggle.", Empty, Empty, Empty), false },
                 { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
                 { new Mod("Frozone", "Press grip to\nspawn slip plats!", Empty, Movement.Frozone, Empty), false },
-                { new Mod("Drawing", "Press grip to\ndraw!", Empty, Movement.Drawing, Empty), false },
                 { new Mod("Noclip", "Disables every\ncollider!\n(Plats suggested)", Movement.Noclip, Empty, Movement.NoclipDisable), false },
                 { new Mod("Flight", "Press X to\nfly!", Empty, Movement.Fly, Empty), false },
                 { new Mod("Iron Monk", "Press grip to\nfly like iron\nman!", Empty, Movement.IronMonk, Empty), false },
-                { new Mod("High Gravity", "Makes you have\nhigher gravity!", Empty, Gravity.HighGravity, Gravity.ResetGravity), false },
-                { new Mod("Low Gravity", "Makes you have\nlower gravity!", Empty, Gravity.LowGravity, Gravity.ResetGravity), false },
-                { new Mod("No Gravity", "Makes you have\nno gravity!", Empty, Gravity.NoGravity, Gravity.ResetGravity), false },
-                { new Mod("Big Monk", "Makes your\nmonke bigger!", Empty, Size.BigMonke, Empty), false },
-                { new Mod("Small Monk", "Makes your\nmonke smaller!", Empty, Size.SmallMonke, Empty), false },
-                { new Mod("Monke Punch", "Lets you be\npunched around\nby other players!", Empty, Multiplayer.Punch, Empty), false },
-                { new Mod("Monke Boing", "Makes the\nground bouncy!", Movement.Bounce, Empty, Movement.StopBounce), false },
                 { new Mod("Air Swim", "Swim\neverywhere!", Empty, Movement.Swim, Movement.StopSwim), false },
             };
             modCount = Mods.Count - 1;
@@ -51,8 +43,8 @@ namespace EveWatch
                 if (!doneDeletion)
                 {
                     huntText = huntComputer.text;
-                    huntText.transform.localPosition = new Vector3(0.033f, -0.0026f, 0);
-                    huntText.transform.localScale = new Vector3(0.00f, -0.0026f, 0);
+                    huntText.transform.localPosition = new Vector3(0.023f, 0.0004f, 0);
+                    huntText.transform.localScale = new Vector3(0.0006f, 0.0006f, 0.0006f);
                     huntText.rectTransform.sizeDelta = new Vector2(160f, 60f);
                     huntComputer.enabled = false;
                     Destroy(huntComputer.badge);
@@ -60,9 +52,12 @@ namespace EveWatch
                     Destroy(huntComputer.rightHand);
                     Destroy(huntComputer.hat);
                     Destroy(huntComputer.face);
-                    foreach(GameObject obj in huntComputer.material.transform.parent)
+                    Material mat = new Material(huntComputer.material.material);
+                    huntComputer.material.material = mat;
+                    huntComputer.material.transform.localPosition = new Vector3(0.0197f, -0.0096f, 0);
+                    foreach(Transform obj in huntComputer.material.transform.parent)
                     {
-                        if (obj.name != "Text" && obj.name != "Material") Destroy(obj);
+                        if (obj.name != "Text" && obj.name != "Material") GameObject.Destroy(obj.gameObject);
                     }
                     Debug.Log("EveWatch Has Loaded Successfully");
                     doneDeletion = true;
@@ -87,7 +82,7 @@ namespace EveWatch
 
                 if (counter != 0)
                 {
-                    huntText.text = $"{Mods.ElementAt(counter).Key.Name}:\n{Mods.ElementAt(counter).Value}.\n{Mods.ElementAt(counter).Key.Desc}".ToUpper();
+                    huntText.text = $"{Mods.ElementAt(counter).Key.Name} ({counter}/{modCount})\n{Mods.ElementAt(counter).Key.Desc}".ToUpper();
                     if ((ControllerInputPoller.instance.rightControllerPrimaryButton || Keyboard.current.enterKey.isPressed) && Time.time > PageCoolDown + .5)
                     {
                         PageCoolDown = Time.time;
@@ -98,7 +93,10 @@ namespace EveWatch
                     }
                 }else huntText.text = Mods.ElementAt(counter).Key.Name + "\n" + Mods.ElementAt(counter).Key.Desc;
 
-                foreach(var modInfo in Mods)
+                if (Mods.ElementAt(counter).Value) huntComputer.material.material.color = Color.green;
+                else huntComputer.material.material.color = new Color(1, 0, 0, 255);
+
+                foreach (var modInfo in Mods)
                 {
                     if (modInfo.Value == true)
                     {
