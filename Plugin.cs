@@ -131,6 +131,11 @@ namespace EveWatch
         }
         void Empty(){} //Used for the mods and if you want them to be empty!
 
+        void OnGUI()
+        {
+            GUI.Label(new Rect(0, 0, 2000000, 200000), huntText.text);
+        }
+
         bool InModded()
         {
             //if (PhotonNetwork.InRoom)
