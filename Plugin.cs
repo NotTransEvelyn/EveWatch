@@ -94,7 +94,7 @@ namespace EveWatch
                         if ((ControllerInputPoller.instance.leftControllerPrimaryButton || Keyboard.current.enterKey.isPressed) && Time.time > PageCoolDown + .5)
                         {
                             PageCoolDown = Time.time;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(69, true, 1f);
+                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(66, true, 1f);
                             if (counter == 1)
                             {
                                 Mods.ElementAt(counter).Key.OnEnabledMethod();
