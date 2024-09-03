@@ -3,14 +3,14 @@ using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TheGorillaWatch.Mods;
+using EveWatch.Mods;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace TheGorillaWatch
+namespace EveWatch
 {
-    [BepInPlugin("ArtificialGorillas.GorillaWatch", "GorillaWatch", "1.4.0")]
+    [BepInPlugin("Eve.EveWatch", "EveWatch", "1.4.0")]
     public class Main : BaseUnityPlugin
     {
         static int counter;
@@ -23,7 +23,7 @@ namespace TheGorillaWatch
         {
             Mods = new Dictionary<Mod, bool>()
             {
-                { new Mod("Gorilla Watch!", "Triggers To\nSwitch Pages\nA To Toggle.", Empty, Empty, Empty), false },
+                { new Mod("Eve Watch!", "Triggers To\nSwitch Pages\nA To Toggle.", Empty, Empty, Empty), false },
                 { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
                 { new Mod("Frozone", "Press grip to\nspawn slip plats!", Empty, Movement.Frozone, Empty), false },
                 { new Mod("Drawing", "Press grip to\ndraw!", Empty, Movement.Drawing, Empty), false },
@@ -52,15 +52,19 @@ namespace TheGorillaWatch
                 {
                     huntText = huntComputer.text;
                     huntText.transform.localPosition = new Vector3(0.033f, -0.0026f, 0);
+                    huntText.transform.localScale = new Vector3(0.00f, -0.0026f, 0);
                     huntText.rectTransform.sizeDelta = new Vector2(160f, 60f);
                     huntComputer.enabled = false;
-                    Destroy(huntComputer.material);
                     Destroy(huntComputer.badge);
                     Destroy(huntComputer.leftHand);
                     Destroy(huntComputer.rightHand);
                     Destroy(huntComputer.hat);
                     Destroy(huntComputer.face);
-                    Debug.Log("GorillaWatch Has Loaded Successfully");
+                    foreach(GameObject obj in huntComputer.badge.transform.parent)
+                    {
+                        if (obj.name != "Text" && obj.name != "Material") Destroy(obj);
+                    }
+                    Debug.Log("EveWatch Has Loaded Successfully");
                     doneDeletion = true;
                 }
                 huntComputer.gameObject.SetActive(true);
@@ -107,11 +111,12 @@ namespace TheGorillaWatch
 
         bool InModded()
         {
-            if (PhotonNetwork.InRoom)
-            {
-                return PhotonNetwork.CurrentRoom.CustomProperties["gameMode"].ToString().Contains("MODDED");
-            }
-            return false;
+            //if (PhotonNetwork.InRoom)
+            //{
+            //    return PhotonNetwork.CurrentRoom.CustomProperties["gameMode"].ToString().Contains("MODDED");
+            //}
+            //return false;
+            return true;
         }
     }
 

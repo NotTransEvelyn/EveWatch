@@ -1,4 +1,4 @@
-﻿namespace TheGorillaWatch.Mods
+﻿namespace EveWatch.Mods
 {
     public class Size
     {

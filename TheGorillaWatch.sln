@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheGorillaWatch", "TheGorillaWatch.csproj", "{E40B6D7C-2EA6-4A09-82E8-E7A6907E1C77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveWatch", "EveWatch.csproj", "{E40B6D7C-2EA6-4A09-82E8-E7A6907E1C77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace TheGorillaWatch.Mods
+namespace EveWatch.Mods
 {
     public class Gravity
     {
