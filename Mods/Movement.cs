@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using EveWatch.Librarys;
+using HarmonyLib;
+using Photon.Pun;
+using UnityEngine;
 
 namespace EveWatch.Mods
 {
@@ -146,6 +149,31 @@ namespace EveWatch.Mods
             {
                 GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(10 * -GorillaTagger.Instance.offlineVRRig.transform.Find("rig/body/shoulder.R/upper_arm.R/forearm.R/hand.R").right, ForceMode.Acceleration);
                 GorillaTagger.Instance.StartVibration(false, GorillaTagger.Instance.tapHapticStrength / 50f * GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.velocity.magnitude, GorillaTagger.Instance.tapHapticDuration);
+            }
+        }
+        #endregion
+
+        #region Tp Gun
+        public static void TpGun()
+        {
+            GunLib.GunLibData gunLibData = GunLib.Shoot();
+
+            if (gunLibData.isTriggered)
+            {
+                Camera.main.transform.localPosition = Vector3.zero;
+                Vector3 target = new Vector3(gunLibData.hitPosition.x, gunLibData.hitPosition.y, gunLibData.hitPosition.z);
+
+                Traverse.Create(GorillaLocomotion.Player.Instance).Field("lastPosition").SetValue(target);
+                Traverse.Create(GorillaLocomotion.Player.Instance).Field("lastLeftHandPosition").SetValue(target);
+                Traverse.Create(GorillaLocomotion.Player.Instance).Field("lastRightHandPosition").SetValue(target);
+                Traverse.Create(GorillaLocomotion.Player.Instance).Field("lastHeadPosition").SetValue(target);
+                
+                GorillaLocomotion.Player.Instance.leftControllerTransform.position = target;
+                GorillaLocomotion.Player.Instance.rightControllerTransform.position = target;
+                GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.transform.position = target;
+
+                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().position = target;
+                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
         }
         #endregion

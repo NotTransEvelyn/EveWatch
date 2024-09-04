@@ -28,11 +28,12 @@ namespace EveWatch
                 { new Mod("Eve Watch!", "Welcome to\nEveWatch! Look at\nthe CoC board\nfor the controls!", Empty, Empty, Empty), false },
                 { new Mod("Disconnect","Makes you leave\nthe lobby!", ()=>NetworkSystem.Instance.ReturnToSinglePlayer(), Empty, Empty), false },
                 { new Mod("Swap Theme","Changes the menus\ntheme!", Themes.SwitchTheme, Empty, Empty), false },
-                { new Mod("Platforms ","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
-                { new Mod("Frozone   ", "Press grip to\nspawn slip plats!", Empty, Movement.Frozone, Empty), false },
-                { new Mod("Noclip    ", "Disables every\ncollider!\n(Plats suggested)", Movement.Noclip, Empty, Movement.NoclipDisable), false },
-                { new Mod("Flight    ", "Press A to\nfly!", Empty, Movement.Fly, Empty), false },
-                { new Mod("Iron Monk ", "Press grip to\nfly like iron\nman!", Empty, Movement.IronMonk, Empty), false }
+                { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
+                { new Mod("Frozone", "Press grip to\nspawn slip plats!", Empty, Movement.Frozone, Empty), false },
+                { new Mod("Noclip", "Disables every\ncollider!\n(Plats suggested)", Movement.Noclip, Empty, Movement.NoclipDisable), false },
+                { new Mod("Flight", "Press A to\nfly!", Empty, Movement.Fly, Empty), false },
+                { new Mod("Iron Monk", "Press grip to\nfly like iron\nman!", Empty, Movement.IronMonk, Empty), false },
+                { new Mod("Tp Gun", "Teleport around\nwith a gun!", Empty, Movement.TpGun, Empty), false },
             };
             modCount = Mods.Count - 1;
         }
