@@ -23,16 +23,29 @@ namespace EveWatch
         bool doneDeletion;
         void Start()
         {
+            new GameObject("EveWatch").AddComponent<Visual>();
             Mods = new Dictionary<Mod, bool>()
             {
+                //Title
                 { new Mod("Eve Watch!", "Welcome to\nEveWatch! Look at\nthe CoC board\nfor the controls!", Empty, Empty, Empty), false },
+
+                //One Press
                 { new Mod("Disconnect","Makes you leave\nthe lobby!", ()=>NetworkSystem.Instance.ReturnToSinglePlayer(), Empty, Empty), false },
                 { new Mod("Swap Theme","Changes the menus\ntheme!", Themes.SwitchTheme, Empty, Empty), false },
+
+                //Flights
                 { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
-                { new Mod("Frozone", "Press grip to\nspawn slip plats!", Empty, Movement.Frozone, Empty), false },
-                { new Mod("Noclip", "Disables every\ncollider!\n(Plats suggested)", Movement.Noclip, Empty, Movement.NoclipDisable), false },
                 { new Mod("Flight", "Press A to\nfly!", Empty, Movement.Fly, Empty), false },
                 { new Mod("Iron Monk", "Press grip to\nfly like iron\nman!", Empty, Movement.IronMonk, Empty), false },
+
+                //Movement
+                { new Mod("No Tag Freeze", "No tag freeze\npretty easy\nto understand.", Empty, ()=>GorillaLocomotion.Player.Instance.disableMovement = false, Empty), false },
+
+                //Visual
+                { new Mod("Tracers", "Tracers to every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.Tracers, Empty, Visual.DisableTracers), false },
+                { new Mod("Box ESP", "Boxes around every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.BoxESP, Empty, Visual.DisableBoxESP), false },
+
+                //Guns
                 { new Mod("Tp Gun", "Teleport around\nwith a gun!", Empty, Movement.TpGun, Empty), false },
             };
             modCount = Mods.Count - 1;
@@ -70,12 +83,10 @@ namespace EveWatch
                     GameObject title = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/UI/CodeOfConduct_Group/CodeOfConduct");
                     title.GetComponent<TextMeshPro>().richText = true;
                     title.GetComponent<TextMeshPro>().text = "<color=#FF0000>E</color><color=#FFAA00>V</color><color=#AAFF00>E</color><color=#00FFAA>W</color><color=#00A9FF>A</color><color=#0000FF>T</color><color=#AA00FF>C</color><color=#FF00AA>H</color>";
-                    title.GetComponent<TextMeshPro>().font = TMP_FontAsset.CreateFontAsset(huntText.font);
 
                     GameObject desc = title.transform.GetChild(0).gameObject;
                     desc.GetComponent<TextMeshPro>().richText = true;
                     desc.GetComponent<TextMeshPro>().text = new WebClient().DownloadString("https://pastebin.com/raw/wErPZy4f").ToUpper();
-                    desc.GetComponent<TextMeshPro>().font = TMP_FontAsset.CreateFontAsset(huntText.font);
                     
                     Debug.Log("EveWatch Has Loaded Successfully");
                     doneDeletion = true;
