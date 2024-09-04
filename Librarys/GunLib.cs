@@ -50,7 +50,6 @@ namespace EveWatch.Librarys
         {
             try
             {
-                RaycastHit hit;
                 bool rightHand3 = false;
 
                 Transform controller;
@@ -69,16 +68,16 @@ namespace EveWatch.Librarys
 
                 if (data.isShooting)
                 {
-                    Renderer pr = pointer != null ? pointer.GetComponent<Renderer>() : null;
+                    Renderer pr = pointer?.GetComponent<Renderer>();
                     if (data.lockedPlayer == null && !data.isLocked)
                     {
-                        if (Physics.Raycast(controller.position - controller.up, -controller.up, out hit) && pointer == null)
+                        if (Physics.Raycast(controller.position - controller.up, -controller.up, out RaycastHit hit) && pointer == null)
                         {
                             pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                             GameObject.Destroy(pointer.GetComponent<Rigidbody>());
                             GameObject.Destroy(pointer.GetComponent<SphereCollider>());
                             pointer.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                            pr = pointer != null ? pointer.GetComponent<Renderer>() : null;
+                            pr = pointer?.GetComponent<Renderer>();
                             pr.material.color = Color.red;
                             pr.material.shader = Shader.Find("GUI/Text Shader");
                         }
@@ -168,14 +167,13 @@ namespace EveWatch.Librarys
                 }
                 if (data.isShooting)
                 {
-                    RaycastHit hit;
-                    Renderer pr = pointer != null ? pointer.GetComponent<Renderer>() : null;
-                    if (Physics.Raycast(controller.position - controller.up, -controller.up, out hit) && pointer == null)
+                    Renderer pr = pointer?.GetComponent<Renderer>();
+                    if (Physics.Raycast(controller.position - controller.up, -controller.up, out RaycastHit hit) && pointer == null)
                     {
                         pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         GameObject.Destroy(pointer.GetComponent<SphereCollider>());
                         pointer.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                        pr = pointer != null ? pointer.GetComponent<Renderer>() : null;
+                        pr = pointer?.GetComponent<Renderer>();
                         pr.material.color = Color.red;
                         pr.material.shader = Shader.Find("GUI/Text Shader");
                     }
