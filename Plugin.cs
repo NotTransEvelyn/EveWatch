@@ -68,7 +68,7 @@ namespace EveWatch
                     
                     GameObject title = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/UI/CodeOfConduct_Group/CodeOfConduct");
                     title.GetComponent<TextMeshPro>().richText = true;
-                    title.GetComponent<TextMeshPro>().text = "<color=#FF0000>E</color><color=#FFAA00>V</color><color=#AAFF00>E</color> <color=#00FFAA>W</color><color=#00A9FF>A</color><color=#0000FF>T</color><color=#AA00FF>C</color><color=#FF00AA>H</color>";
+                    title.GetComponent<TextMeshPro>().text = "<color=#FF0000>E</color><color=#FFAA00>V</color><color=#AAFF00>E</color><color=#00FFAA>W</color><color=#00A9FF>A</color><color=#0000FF>T</color><color=#AA00FF>C</color><color=#FF00AA>H</color>";
                     title.GetComponent<TextMeshPro>().font = TMP_FontAsset.CreateFontAsset(huntText.font);
 
                     GameObject desc = title.transform.GetChild(0).gameObject;
