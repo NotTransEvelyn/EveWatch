@@ -154,27 +154,29 @@ namespace EveWatch.Mods
         #endregion
 
         #region Tp Gun
+        static bool lastTrigged;
         public static void TpGun()
         {
             GunLib.GunLibData gunLibData = GunLib.Shoot();
 
-            if (gunLibData.isTriggered)
+            if (gunLibData.isTriggered && !lastTrigged)
             {
                 Camera.main.transform.localPosition = Vector3.zero;
                 Vector3 target = new Vector3(gunLibData.hitPosition.x, gunLibData.hitPosition.y, gunLibData.hitPosition.z);
+                GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.transform.position = target;
+
+                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().position = target;
+                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
                 Traverse.Create(GorillaLocomotion.Player.Instance).Field("lastPosition").SetValue(target);
                 Traverse.Create(GorillaLocomotion.Player.Instance).Field("lastLeftHandPosition").SetValue(target);
                 Traverse.Create(GorillaLocomotion.Player.Instance).Field("lastRightHandPosition").SetValue(target);
                 Traverse.Create(GorillaLocomotion.Player.Instance).Field("lastHeadPosition").SetValue(target);
-                
+
                 GorillaLocomotion.Player.Instance.leftControllerTransform.position = target;
                 GorillaLocomotion.Player.Instance.rightControllerTransform.position = target;
-                GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.transform.position = target;
-
-                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().position = target;
-                GorillaLocomotion.Player.Instance.GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
+            lastTrigged = gunLibData.isTriggered;
         }
         #endregion
     }
