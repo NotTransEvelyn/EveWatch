@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using GorillaGameModes;
+using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,8 @@ namespace EveWatch.Mods
         #region TagAura
         static Dictionary<string, float> tagAuraAndDist = new Dictionary<string, float>()
         {
-            { "Short", 0.5f },
-            { "Comp", 1.2f },
+            { "Short", 1 },
+            { "Comp", 1.5f },
             { "Extreme", 5 },
         };
 
@@ -51,13 +52,7 @@ namespace EveWatch.Mods
 
                 if (GorillaTagger.Instance.offlineVRRig.setMatIndex != 0 && vrrig.setMatIndex == 0 && GorillaLocomotion.Player.Instance.disableMovement == false && distance < dist)
                 {
-                    //GorillaLocomotion.Player.Instance.rightControllerTransform.position = vrrig.headMesh.transform.position;
-                    object[] arr = new object[]
-                    {
-                        vrrig.photonView.Owner,
-                        new PhotonMessageInfo(PhotonNetwork.LocalPlayer, 0, GorillaTagger.Instance.myVRRig)
-                    };
-                    GorillaTagger.Instance.myVRRig.RPC("ReportTagRPC", RpcTarget.Others, arr);
+                    GameMode.ReportTag(vrrig.Creator);
                 }
             }
         }
