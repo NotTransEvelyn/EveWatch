@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,7 +51,13 @@ namespace EveWatch.Mods
 
                 if (GorillaTagger.Instance.offlineVRRig.setMatIndex != 0 && vrrig.setMatIndex == 0 && GorillaLocomotion.Player.Instance.disableMovement == false && distance < dist)
                 {
-                    GorillaLocomotion.Player.Instance.rightControllerTransform.position = vrrig.headMesh.transform.position;
+                    //GorillaLocomotion.Player.Instance.rightControllerTransform.position = vrrig.headMesh.transform.position;
+                    object[] arr = new object[]
+                    {
+                        vrrig.photonView.Owner,
+                        new PhotonMessageInfo(PhotonNetwork.LocalPlayer, 0, GorillaTagger.Instance.myVRRig)
+                    };
+                    GorillaTagger.Instance.myVRRig.RPC("ReportTagRPC", RpcTarget.Others, arr);
                 }
             }
         }
