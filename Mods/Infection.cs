@@ -38,7 +38,7 @@ namespace EveWatch.Mods
             if (!foo)
             {
                 Main.GetMod("Tag Aura").Desc = $"Type: {CurrentTagAuraName}\nLets you tag\npeople easier!";
-                Main.GetMod("Change Tag Aura Distance").Desc = $"Distance: {CurrentTagAuraName}";
+                Main.GetMod("Change Distance").Desc = $"Distance: {CurrentTagAuraName}";
             }
         }
 
