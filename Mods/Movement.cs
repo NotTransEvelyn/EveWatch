@@ -1,6 +1,8 @@
 ﻿using EveWatch.Librarys;
 using HarmonyLib;
 using Photon.Pun;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace EveWatch.Mods
@@ -177,6 +179,41 @@ namespace EveWatch.Mods
                 GorillaLocomotion.Player.Instance.rightControllerTransform.position = target;
             }
             lastTrigged = gunLibData.isTriggered;
+        }
+        #endregion
+
+        #region Speed Boost
+        static Dictionary<string, float> boostAndSpeed = new Dictionary<string, float>()
+        {
+            { "Weak", 10 },
+            { "Comp", 15 },
+            { "Extreme", 30 },
+        };
+        static int currentSpeedIndex;
+
+        public static string CurrentSpeedName;
+        static float CurrentSpeed;
+
+        public static void SwitchBoostType(bool foo = false)
+        {
+            if (!foo) currentSpeedIndex++;
+            if (currentSpeedIndex ==  boostAndSpeed.Count) currentSpeedIndex = 0;
+
+            CurrentSpeedName = boostAndSpeed.ElementAt(currentSpeedIndex).Key;
+            CurrentSpeed = boostAndSpeed.ElementAt(currentSpeedIndex).Value;
+        }
+
+        public static void SpeedBoost()
+        {
+            if (CurrentSpeed == 0) { SwitchBoostType(true); }
+            GorillaLocomotion.Player.Instance.maxJumpSpeed = CurrentSpeed;
+            GorillaLocomotion.Player.Instance.jumpMultiplier = CurrentSpeed / 3;
+        }
+
+        public static void DisableSpeedBoost()
+        {
+            GorillaLocomotion.Player.Instance.maxJumpSpeed = 6.5f;
+            GorillaLocomotion.Player.Instance.jumpMultiplier = 1.1f;
         }
         #endregion
     }

@@ -23,15 +23,14 @@ namespace EveWatch
         bool doneDeletion;
         void Start()
         {
-            new GameObject("EveWatch").AddComponent<Visual>();
+            Movement.SwitchBoostType(true);
             Mods = new Dictionary<Mod, bool>()
             {
                 //Title
-                { new Mod("Eve Watch!", "Welcome to\nEveWatch! Look at\nthe CoC board\nfor the controls!", Empty, Empty, Empty), false },
+                { new Mod("Eve Watch!", "Welcome to\nEveWatch! Look at\nthe CoC board\nfor the controls!", Empty, Empty, Empty), false},
 
-                //One Press
-                { new Mod("Disconnect","Makes you leave\nthe lobby!", ()=>NetworkSystem.Instance.ReturnToSinglePlayer(), Empty, Empty), false },
-                { new Mod("Swap Theme","Changes the menus\ntheme!", Themes.SwitchTheme, Empty, Empty), false },
+                //Room
+                { new Mod("Disconnect","Makes you leave\nthe lobby!", ()=>NetworkSystem.Instance.ReturnToSinglePlayer(), Empty, Empty, true), false },
 
                 //Flights
                 { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
@@ -40,6 +39,7 @@ namespace EveWatch
 
                 //Movement
                 { new Mod("No Tag Freeze", "No tag freeze\npretty easy\nto understand.", Empty, ()=>GorillaLocomotion.Player.Instance.disableMovement = false, Empty), false },
+                { new Mod("Speed Boost", $"Type:{Movement.CurrentSpeedName}\nGives you a\nlittle boost\nin speed!", Empty, Movement.SpeedBoost, Movement.DisableSpeedBoost), false },
 
                 //Visual
                 { new Mod("Tracers", "Tracers to every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.Tracers, Empty, Visual.DisableTracers), false },
@@ -47,6 +47,10 @@ namespace EveWatch
 
                 //Guns
                 { new Mod("Tp Gun", "Teleport around\nwith a gun!", Empty, Movement.TpGun, Empty), false },
+
+                //Settings
+                { new Mod("Change Speed", $"Changes your speed\nboost, boost.\nType: {Movement.CurrentSpeedName}", ()=>Movement.SwitchBoostType(), Empty, Empty, true), false },
+                { new Mod("Swap Theme","Changes the menus\ntheme!", Themes.SwitchTheme, Empty, Empty, true), false },
             };
             modCount = Mods.Count - 1;
         }
@@ -87,7 +91,8 @@ namespace EveWatch
                     GameObject desc = title.transform.GetChild(0).gameObject;
                     desc.GetComponent<TextMeshPro>().richText = true;
                     desc.GetComponent<TextMeshPro>().text = new WebClient().DownloadString("https://pastebin.com/raw/wErPZy4f").ToUpper();
-                    
+                    new GameObject("EveWatch").AddComponent<Visual>();
+
                     Debug.Log("EveWatch Has Loaded Successfully");
                     doneDeletion = true;
                 }
@@ -121,7 +126,7 @@ namespace EveWatch
                         {
                             PageCoolDown = Time.time;
                             GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(66, true, 1f);
-                            if (counter == 1 || counter == 2)
+                            if (Mods.ElementAt(counter).Key.Toggle)
                             {
                                 Mods.ElementAt(counter).Key.OnEnabledMethod();
                                 return;
@@ -186,13 +191,16 @@ namespace EveWatch
         public Action StayEnabledMethod { get; set; }
         public Action OnDisabledMethod { get; set; }
 
-        public Mod(string name, string desc, Action onEnabled, Action stayEnabled, Action onDisabled)
+        public bool Toggle { get; set; }
+
+        public Mod(string name, string desc, Action onEnabled, Action stayEnabled, Action onDisabled, bool toggle = false)
         {
             Name = name;
             Desc = desc;
             OnEnabledMethod = onEnabled;
             StayEnabledMethod = stayEnabled;
             OnDisabledMethod = onDisabled;
+            Toggle = toggle;
         }
     }
 }
