@@ -186,9 +186,9 @@ namespace EveWatch.Mods
         #region Speed Boost
         static Dictionary<string, float> boostAndSpeed = new Dictionary<string, float>()
         {
-            { "Weak", 10 },
-            { "Comp", 15 },
-            { "Extreme", 30 },
+            { "Weak", 7 },
+            { "Comp", 7.5f },
+            { "Extreme", 10 },
         };
         static int currentSpeedIndex;
 
@@ -212,7 +212,7 @@ namespace EveWatch.Mods
         {
             if (CurrentSpeed == 0) { SwitchBoostType(true); }
             GorillaLocomotion.Player.Instance.maxJumpSpeed = CurrentSpeed;
-            GorillaLocomotion.Player.Instance.jumpMultiplier = CurrentSpeed / 3;
+            GorillaLocomotion.Player.Instance.jumpMultiplier = CurrentSpeed / 5;
         }
 
         public static void DisableSpeedBoost()
@@ -222,4 +222,4 @@ namespace EveWatch.Mods
         }
         #endregion
     }
-}
+} 
