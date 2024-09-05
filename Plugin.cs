@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using System.Net;
 using TMPro;
+using static Photon.Pun.UtilityScripts.TabViewManager;
 
 namespace EveWatch
 {
@@ -24,6 +25,7 @@ namespace EveWatch
         void Start()
         {
             Movement.SwitchBoostType(true);
+            Infection.SwitchTagType(true);
             Mods = new Dictionary<Mod, bool>()
             {
                 //Title
@@ -32,14 +34,17 @@ namespace EveWatch
                 //Room
                 { new Mod("Disconnect","Makes you leave\nthe lobby!", ()=>NetworkSystem.Instance.ReturnToSinglePlayer(), Empty, Empty, true), false },
 
-                //Flights
+                //Movement
                 { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
+                { new Mod("Speed Boost", $"Type: {Movement.CurrentSpeedName}\nGives you a\nlittle boost\nin speed!", Empty, Movement.SpeedBoost, Movement.DisableSpeedBoost), false },
+                { new Mod("No Tag Freeze", "Just no tag\nfreeze pretty easy\nto understand.", Empty, ()=>GorillaLocomotion.Player.Instance.disableMovement = false, Empty), false },
+
+                //Infection
+                { new Mod("Tag Aura", $"Type: {Infection.CurrentTagAuraName}\nLets you tag\npeople easier!", Empty, ()=>Infection.TagAura(), Empty), false },
+
+                //Flights
                 { new Mod("Flight", "Press A to\nfly!", Empty, Movement.Fly, Empty), false },
                 { new Mod("Iron Monk", "Press grip to\nfly like iron\nman!", Empty, Movement.IronMonk, Empty), false },
-
-                //Movement
-                { new Mod("No Tag Freeze", "No tag freeze\npretty easy\nto understand.", Empty, ()=>GorillaLocomotion.Player.Instance.disableMovement = false, Empty), false },
-                { new Mod("Speed Boost", $"Type: {Movement.CurrentSpeedName}\nGives you a\nlittle boost\nin speed!", Empty, Movement.SpeedBoost, Movement.DisableSpeedBoost), false },
 
                 //Visual
                 { new Mod("Tracers", "Tracers to every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.Tracers, Empty, Visual.DisableTracers), false },
@@ -50,6 +55,7 @@ namespace EveWatch
 
                 //Settings
                 { new Mod("Change Speed", $"Changes your speed\nboost, boost.\nType: {Movement.CurrentSpeedName}", ()=>Movement.SwitchBoostType(), Empty, Empty, true), false },
+                { new Mod("Change Distance", $"Distance: {Infection.CurrentTagAuraName}\nChanges your\nTag Aura Distance", ()=>Infection.SwitchTagType(), Empty, Empty, true), false },
                 { new Mod("Swap Theme","Changes the menus\ntheme!", Themes.SwitchTheme, Empty, Empty, true), false },
             };
             modCount = Mods.Count - 1;
