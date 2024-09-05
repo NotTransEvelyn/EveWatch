@@ -39,7 +39,7 @@ namespace EveWatch
 
                 //Movement
                 { new Mod("No Tag Freeze", "No tag freeze\npretty easy\nto understand.", Empty, ()=>GorillaLocomotion.Player.Instance.disableMovement = false, Empty), false },
-                { new Mod("Speed Boost", $"Type:{Movement.CurrentSpeedName}\nGives you a\nlittle boost\nin speed!", Empty, Movement.SpeedBoost, Movement.DisableSpeedBoost), false },
+                { new Mod("Speed Boost", $"Type: {Movement.CurrentSpeedName}\nGives you a\nlittle boost\nin speed!", Empty, Movement.SpeedBoost, Movement.DisableSpeedBoost), false },
 
                 //Visual
                 { new Mod("Tracers", "Tracers to every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.Tracers, Empty, Visual.DisableTracers), false },
@@ -170,6 +170,15 @@ namespace EveWatch
                 style.font = huntText.font;
                 GUI.Label(new Rect(0, 0, 200000000, 20000000), huntText.text, style);
             }
+        }
+
+        public static Mod GetMod(string name)
+        {
+            foreach(Mod mod in Mods.Keys)
+            {
+                if (mod.Name == name) return mod;
+            }
+            return null;
         }
 
         bool InModded()

@@ -1,6 +1,7 @@
 ﻿using EveWatch.Librarys;
 using HarmonyLib;
 using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -197,10 +198,14 @@ namespace EveWatch.Mods
         public static void SwitchBoostType(bool foo = false)
         {
             if (!foo) currentSpeedIndex++;
-            if (currentSpeedIndex ==  boostAndSpeed.Count) currentSpeedIndex = 0;
-
+            if (currentSpeedIndex == boostAndSpeed.Count) currentSpeedIndex = 0;
             CurrentSpeedName = boostAndSpeed.ElementAt(currentSpeedIndex).Key;
             CurrentSpeed = boostAndSpeed.ElementAt(currentSpeedIndex).Value;
+            if (!foo)
+            {
+                Main.GetMod("Change Speed").Desc = $"Changes your speed\nboost, boost.\nType: {Movement.CurrentSpeedName}";
+                Main.GetMod("Speed Boost").Desc = $"Type: {Movement.CurrentSpeedName}\nGives you a\nlittle boost\nin speed!";
+            }
         }
 
         public static void SpeedBoost()
