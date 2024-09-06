@@ -65,6 +65,8 @@ namespace EveWatch
         bool lookedAtMainPage;
         bool lastY;
         bool hideAndLock;
+
+        public static GameObject button;
         void Update()
         {
             huntComputer = GorillaTagger.Instance.offlineVRRig.huntComputer.GetComponent<GorillaHuntComputer>();
@@ -89,7 +91,16 @@ namespace EveWatch
                     {
                         if (obj.name != "Text" && obj.name != "Material") GameObject.Destroy(obj.gameObject);
                     }
-                    
+                    button = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    button.transform.SetParent(huntComputer.material.transform, false);
+                    button.GetComponent<Renderer>().material.shader = Shader.Find("GorillaTag/UberShader");
+                    button.AddComponent<Librarys.Button>();
+                    button.transform.localPosition = new Vector3(12, 12, 1);
+                    button.layer = 18;
+                    button.GetComponent<BoxCollider>().isTrigger = true;
+                    Destroy(button.GetComponent<Renderer>());
+                    Destroy(button.GetComponent<MeshFilter>());
+
                     GameObject title = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/UI/CodeOfConduct_Group/CodeOfConduct");
                     title.GetComponent<TextMeshPro>().richText = true;
                     title.GetComponent<TextMeshPro>().text = "<color=#FF0000>E</color><color=#FFAA00>V</color><color=#AAFF00>E</color><color=#00FFAA>W</color><color=#00A9FF>A</color><color=#0000FF>T</color><color=#AA00FF>C</color><color=#FF00AA>H</color>";
@@ -130,16 +141,7 @@ namespace EveWatch
                         huntText.text = $"{Mods.ElementAt(counter).Key.Name} ({counter}/{modCount})\n{Mods.ElementAt(counter).Key.Desc}".ToUpper();
                         if ((ControllerInputPoller.instance.leftControllerPrimaryButton || Keyboard.current.enterKey.isPressed) && Time.time > PageCoolDown + .5)
                         {
-                            PageCoolDown = Time.time;
-                            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(66, true, 1f);
-                            if (Mods.ElementAt(counter).Key.Toggle)
-                            {
-                                Mods.ElementAt(counter).Key.OnEnabledMethod();
-                                return;
-                            }
-                            Mods[Mods.ElementAt(counter).Key] = !Mods.ElementAt(counter).Value;
-                            if (Mods[Mods.ElementAt(counter).Key]) Mods.ElementAt(counter).Key.OnEnabledMethod();
-                            else Mods.ElementAt(counter).Key.OnDisabledMethod();
+                            Toggle();
                         }
                     }
                     else huntText.text = Mods.ElementAt(counter).Key.Name + "\n" + Mods.ElementAt(counter).Key.Desc;
@@ -167,6 +169,20 @@ namespace EveWatch
             }else huntComputer.gameObject.SetActive(false);
         }
         void Empty(){} //Used for the mods and if you want them to be empty!
+
+        public static void Toggle()
+        {
+            PageCoolDown = Time.time;
+            GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(66, true, 1f);
+            if (Mods.ElementAt(counter).Key.Toggle)
+            {
+                Mods.ElementAt(counter).Key.OnEnabledMethod();
+                return;
+            }
+            Mods[Mods.ElementAt(counter).Key] = !Mods.ElementAt(counter).Value;
+            if (Mods[Mods.ElementAt(counter).Key]) Mods.ElementAt(counter).Key.OnEnabledMethod();
+            else Mods.ElementAt(counter).Key.OnDisabledMethod();
+        }
 
         void OnGUI()
         {
