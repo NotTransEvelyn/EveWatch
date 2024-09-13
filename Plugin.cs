@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using System.Net;
 using TMPro;
 using static Photon.Pun.UtilityScripts.TabViewManager;
+using ExitGames.Client.Photon;
 
 namespace EveWatch
 {
@@ -49,9 +50,11 @@ namespace EveWatch
                 //Visual
                 { new Mod("Tracers", "Tracers to every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.Tracers, Empty, Visual.DisableTracers), false },
                 { new Mod("Box ESP", "Boxes around every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.BoxESP, Empty, Visual.DisableBoxESP), false },
+                { new Mod("Watch ESP", "Boxes around every\nEvewatch user!", Visual.WatchESP, Empty, Visual.DisableWatchESP), false },
 
                 //Guns
-                { new Mod("Tp Gun", "Teleport around\nwith a gun!", Empty, Movement.TpGun, Empty), false },
+                { new Mod("Tp Gun", "Teleport around\nwith a gun!", Empty, Guns.TpGun, Empty), false },
+                { new Mod("Button Gun", "Press buttons\nwith a gun!", Empty, Guns.ButtonGun, Empty), false },
 
                 //Settings
                 { new Mod("Change Speed", $"Changes your speed\nboost, boost.\nType: {Movement.CurrentSpeedName}", ()=>Movement.SwitchBoostType(), Empty, Empty, true), false },
@@ -95,7 +98,7 @@ namespace EveWatch
                     button.transform.SetParent(huntComputer.material.transform, false);
                     button.GetComponent<Renderer>().material.shader = Shader.Find("GorillaTag/UberShader");
                     button.AddComponent<Librarys.Button>();
-                    button.transform.localPosition = new Vector3(12, 12, 1);
+                    button.transform.localScale = new Vector3(12, 12, 10);
                     button.layer = 18;
                     button.GetComponent<BoxCollider>().isTrigger = true;
                     Destroy(button.GetComponent<Renderer>());
@@ -109,6 +112,13 @@ namespace EveWatch
                     desc.GetComponent<TextMeshPro>().richText = true;
                     desc.GetComponent<TextMeshPro>().text = new WebClient().DownloadString("https://pastebin.com/raw/wErPZy4f").ToUpper();
                     new GameObject("EveWatch").AddComponent<Visual>();
+
+                    Hashtable hash = new Hashtable()
+                    {
+                        {"EveWatch", true}
+                    };
+
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
                     Debug.Log("EveWatch Has Loaded Successfully");
                     doneDeletion = true;

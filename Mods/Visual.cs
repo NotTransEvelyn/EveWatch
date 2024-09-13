@@ -20,6 +20,12 @@ namespace EveWatch.Mods
         public static void DisableBoxESP() => BoxEspEnabled = false;
         #endregion
 
+        #region WatchESP
+        static bool WatchEspEnabled;
+        public static void WatchESP() => WatchEspEnabled = true;
+        public static void DisableWatchESP() => WatchEspEnabled = false;
+        #endregion
+
         void Update()
         {
             #region Tracers
@@ -27,29 +33,32 @@ namespace EveWatch.Mods
             {
                 if (PhotonNetwork.InRoom)
                 {
-                    foreach (var person in PhotonNetwork.PlayerListOthers)
+                    foreach (var person in NetworkSystem.Instance.AllNetPlayers)
                     {
                         VRRig vRRig = GorillaTagManager.instance.FindPlayerVRRig(person);
-                        if (vRRig.headConstraint.GetComponent<LineRenderer>() == null)
+                        if (vRRig != null && !vRRig.isLocal)
                         {
-                            LineRenderer line = vRRig.headConstraint.AddComponent<LineRenderer>();
-                            line.material.shader = Shader.Find("GUI/Text Shader");
-                            line.startWidth = 0.001f;
-                            line.endWidth = 0.001f;
-                        }
+                            if (vRRig.headConstraint.GetComponent<LineRenderer>() == null)
+                            {
+                                LineRenderer line = vRRig.headConstraint.AddComponent<LineRenderer>();
+                                line.material.shader = Shader.Find("GUI/Text Shader");
+                                line.startWidth = 0.001f;
+                                line.endWidth = 0.001f;
+                            }
 
-                        if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1)
-                        {
-                            vRRig.headConstraint.GetComponent<LineRenderer>().startColor = Color.green;
-                            vRRig.headConstraint.GetComponent<LineRenderer>().endColor = Color.green;
+                            if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1)
+                            {
+                                vRRig.headConstraint.GetComponent<LineRenderer>().startColor = Color.green;
+                                vRRig.headConstraint.GetComponent<LineRenderer>().endColor = Color.green;
+                            }
+                            else
+                            {
+                                vRRig.headConstraint.GetComponent<LineRenderer>().startColor = Color.red;
+                                vRRig.headConstraint.GetComponent<LineRenderer>().endColor = Color.red;
+                            }
+                            vRRig.headConstraint.GetComponent<LineRenderer>().SetPosition(1, GorillaTagger.Instance.offlineVRRig.rightHandTransform.position);
+                            vRRig.headConstraint.GetComponent<LineRenderer>().SetPosition(0, vRRig.headConstraint.position);
                         }
-                        else
-                        {
-                            vRRig.headConstraint.GetComponent<LineRenderer>().startColor = Color.red;
-                            vRRig.headConstraint.GetComponent<LineRenderer>().endColor = Color.red;
-                        }
-                        vRRig.headConstraint.GetComponent<LineRenderer>().SetPosition(1, GorillaTagger.Instance.offlineVRRig.rightHandTransform.position);
-                        vRRig.headConstraint.GetComponent<LineRenderer>().SetPosition(0, vRRig.headConstraint.position);
                     }
                 }
             }
@@ -57,11 +66,14 @@ namespace EveWatch.Mods
             {
                 if (PhotonNetwork.InRoom)
                 {
-                    foreach (var person in PhotonNetwork.PlayerListOthers)
+                    foreach (var person in NetworkSystem.Instance.AllNetPlayers)
                     {
-                        if (GorillaTagManager.instance.FindPlayerVRRig(person).headConstraint.GetComponent<LineRenderer>() != null)
+                        if (!GorillaTagManager.instance.FindPlayerVRRig(person).isLocal)
                         {
-                            Destroy(GorillaTagManager.instance.FindPlayerVRRig(person).headConstraint.GetComponent<LineRenderer>());
+                            if (GorillaTagManager.instance.FindPlayerVRRig(person).headConstraint.GetComponent<LineRenderer>() != null)
+                            {
+                                Destroy(GorillaTagManager.instance.FindPlayerVRRig(person).headConstraint.GetComponent<LineRenderer>());
+                            }
                         }
                     }
                 }
@@ -73,33 +85,76 @@ namespace EveWatch.Mods
             {
                 if (PhotonNetwork.InRoom)
                 {
-                    foreach (var wawa in PhotonNetwork.PlayerListOthers)
+                    foreach (var wawa in NetworkSystem.Instance.AllNetPlayers)
                     {
                         VRRig vRRig = GorillaTagManager.instance.FindPlayerVRRig(wawa);
-                        TextMesh text = null;
+                        if (!vRRig.isLocal)
+                        {
+                            TextMesh text = null;
 
-                        if (vRRig.transform.Find("ESP") != null) Destroy(vRRig.transform.Find("ESP").gameObject);
+                            if (vRRig.transform.Find("ESP") != null) Destroy(vRRig.transform.Find("ESP").gameObject);
 
-                        GameObject wa = new GameObject("ESP");
-                        wa.transform.SetParent(vRRig.transform);
-                        wa.transform.localPosition = Vector3.zero;
-                        wa.transform.localScale = new Vector3(0.025f, 0.025f, 0);
-                        wa.transform.LookAt(Camera.main.transform);
+                            GameObject wa = new GameObject("ESP");
+                            wa.transform.SetParent(vRRig.transform);
+                            wa.transform.localPosition = Vector3.zero;
+                            wa.transform.localScale = new Vector3(0.025f, 0.025f, 0);
+                            wa.transform.LookAt(Camera.main.transform);
 
-                        text = wa.AddComponent<TextMesh>();
-                        text.text = "☐";
-                        text.alignment = TextAlignment.Center;
-                        text.anchor = TextAnchor.MiddleCenter;
-                        text.fontSize = 1000;
+                            text = wa.AddComponent<TextMesh>();
+                            text.text = "☐";
+                            text.alignment = TextAlignment.Center;
+                            text.anchor = TextAnchor.MiddleCenter;
+                            text.fontSize = 1000;
 
-                        if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1) text.color = Color.green;
-                        else text.color = Color.red;
+                            if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1) text.color = Color.green;
+                            else text.color = Color.red;
+                        }
                     }
                 }
             }
             else
             {
-                if (PhotonNetwork.InRoom) foreach (var wawa in PhotonNetwork.PlayerListOthers) if (GorillaTagManager.instance.FindPlayerVRRig(wawa).transform.Find("ESP") != null) Destroy(GorillaTagManager.instance.FindPlayerVRRig(wawa).transform.Find("ESP").gameObject);
+                if (PhotonNetwork.InRoom) foreach (var wawa in NetworkSystem.Instance.AllNetPlayers) if (!GorillaTagManager.instance.FindPlayerVRRig(wawa).isLocal) if (GorillaTagManager.instance.FindPlayerVRRig(wawa).transform.Find("ESP") != null) Destroy(GorillaTagManager.instance.FindPlayerVRRig(wawa).transform.Find("ESP").gameObject);
+            }
+            #endregion
+
+            #region WatchESP
+            if (WatchEspEnabled)
+            {
+                if (PhotonNetwork.InRoom)
+                {
+                    foreach (var wawa in NetworkSystem.Instance.AllNetPlayers)
+                    {
+                        if (wawa.GetPlayerRef().CustomProperties.ContainsKey("EveWatch"))
+                        {
+                            VRRig vRRig = GorillaTagManager.instance.FindPlayerVRRig(wawa);
+                            if (!vRRig.isLocal)
+                            {
+                                TextMesh text = null;
+
+                                if (vRRig.transform.Find("WATCHESP") != null) Destroy(vRRig.transform.Find("WATCHESP").gameObject);
+
+                                GameObject wa = new GameObject("WATCHESP");
+                                wa.transform.SetParent(vRRig.transform);
+                                wa.transform.localPosition = Vector3.zero;
+                                wa.transform.localScale = new Vector3(0.025f, 0.025f, 0);
+                                wa.transform.LookAt(Camera.main.transform);
+
+                                text = wa.AddComponent<TextMesh>();
+                                text.text = "☐";
+                                text.alignment = TextAlignment.Center;
+                                text.anchor = TextAnchor.MiddleCenter;
+                                text.fontSize = 1000;
+
+                                text.color = Color.yellow;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (PhotonNetwork.InRoom) foreach (var wawa in NetworkSystem.Instance.AllNetPlayers) if (!GorillaTagManager.instance.FindPlayerVRRig(wawa).isLocal && wawa.GetPlayerRef().CustomProperties.ContainsKey("EveWatch")) if (GorillaTagManager.instance.FindPlayerVRRig(wawa).transform.Find("WATCHESP") != null) Destroy(GorillaTagManager.instance.FindPlayerVRRig(wawa).transform.Find("WATCHESP").gameObject);
             }
             #endregion
         }

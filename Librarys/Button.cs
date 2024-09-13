@@ -13,15 +13,20 @@ namespace EveWatch.Librarys
 
         void OnTriggerEnter(Collider collider)
         {
-            if (!base.enabled || !(touchTime + debounceTime < Time.time) || collider.GetComponentInParent<GorillaTriggerColliderHandIndicator>() == null)
+            if (touchTime + debounceTime < Time.time && collider.gameObject.name == "RightHandTriggerCollider")
             {
-                return;
-            }
-            touchTime = Time.time;
-            GorillaTriggerColliderHandIndicator component = collider.GetComponent<GorillaTriggerColliderHandIndicator>();
-            if (!component.isLeftHand)
-            {
-                Main.Toggle();
+                touchTime = Time.time;
+                Debug.Log("A");
+                if (collider.GetComponent<GorillaTriggerColliderHandIndicator>() != null)
+                {
+                    Debug.Log("B");
+                    GorillaTriggerColliderHandIndicator component = collider.GetComponent<GorillaTriggerColliderHandIndicator>();
+                    if (!component.isLeftHand)
+                    {
+                        Debug.Log("C");
+                        Main.Toggle();
+                    }
+                }
             }
         }
     }
