@@ -77,6 +77,7 @@ namespace EveWatch
             {
                 if (!doneDeletion)
                 {
+                    //test
                     huntText = huntComputer.text;
                     huntText.transform.localPosition = new Vector3(0.023f, 0.0004f, 0);
                     huntText.transform.localScale = new Vector3(0.0006f, 0.0006f, 0.0006f);
