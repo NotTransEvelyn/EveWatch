@@ -9,7 +9,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using System.Net;
 using TMPro;
-using static Photon.Pun.UtilityScripts.TabViewManager;
 using ExitGames.Client.Photon;
 
 namespace EveWatch
@@ -81,9 +80,8 @@ namespace EveWatch
                 huntText.rectTransform.sizeDelta = new Vector2(160f, 60f);
                 huntComputer.enabled = false;
 
-
-                Material huntComputerMat = new Material(Main.huntComputer.transform.GetChild(1).GetComponent<Renderer>().sharedMaterial);
-                Main.huntComputer.transform.GetChild(1).GetComponent<Renderer>().sharedMaterial = huntComputerMat;
+                Material huntComputerMat = new Material(huntComputer.transform.GetChild(1).GetComponent<Renderer>().sharedMaterial);
+                huntComputer.transform.GetChild(1).GetComponent<Renderer>().sharedMaterial = huntComputerMat;
 
                 Material mat = new Material(huntComputer.material.material);
                 huntComputer.material.material = mat;
