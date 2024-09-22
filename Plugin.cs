@@ -23,6 +23,15 @@ namespace EveWatch
         static Dictionary<Mod, bool> Mods;
 
         bool doneDeletion;
+
+        public static GorillaHuntComputer huntComputer;
+        Text huntText;
+        bool lookedAtMainPage;
+        bool lastY;
+        bool hideAndLock;
+
+        public static GameObject button;
+
         void Start()
         {
             Movement.SwitchBoostType(true);
@@ -62,123 +71,119 @@ namespace EveWatch
                 { new Mod("Swap Theme","Changes the menus\ntheme!", Themes.SwitchTheme, Empty, Empty, true), false },
             };
             modCount = Mods.Count - 1;
-        }
-        public static GorillaHuntComputer huntComputer;
-        Text huntText;
-        bool lookedAtMainPage;
-        bool lastY;
-        bool hideAndLock;
 
-        public static GameObject button;
+            GorillaTagger.OnPlayerSpawned(delegate
+            {
+                huntComputer = GorillaTagger.Instance.offlineVRRig.huntComputer.GetComponent<GorillaHuntComputer>();
+                huntText = huntComputer.text;
+                huntText.transform.localPosition = new Vector3(0.023f, 0.0004f, 0);
+                huntText.transform.localScale = new Vector3(0.0006f, 0.0006f, 0.0006f);
+                huntText.rectTransform.sizeDelta = new Vector2(160f, 60f);
+                huntComputer.enabled = false;
+
+
+                Material huntComputerMat = new Material(Main.huntComputer.transform.GetChild(1).GetComponent<Renderer>().sharedMaterial);
+                Main.huntComputer.transform.GetChild(1).GetComponent<Renderer>().sharedMaterial = huntComputerMat;
+
+                Material mat = new Material(huntComputer.material.material);
+                huntComputer.material.material = mat;
+                huntComputer.material.transform.localPosition = new Vector3(0.0197f, -0.0096f, 0);
+
+                foreach (Transform obj in huntComputer.material.transform.parent)
+                {
+                    if (obj.name != "Text" && obj.name != "Material")
+                    {
+                        if (obj.GetComponent<Image>() != null) GameObject.Destroy(obj.GetComponent<Image>());
+                        GameObject.Destroy(obj.gameObject);
+                    }
+                }
+                button = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                button.transform.SetParent(huntComputer.material.transform, false);
+                button.GetComponent<Renderer>().material.shader = Shader.Find("GorillaTag/UberShader");
+                button.AddComponent<Librarys.Button>();
+                button.transform.localScale = new Vector3(12, 12, 10);
+                button.layer = 18;
+                button.GetComponent<BoxCollider>().isTrigger = true;
+                Destroy(button.GetComponent<Renderer>());
+                Destroy(button.GetComponent<MeshFilter>());
+
+                GameObject title = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/CodeOfConduct");
+                title.GetComponent<TextMeshPro>().richText = true;
+                title.GetComponent<TextMeshPro>().text = "<color=#FF0000>E</color><color=#FFAA00>V</color><color=#AAFF00>E</color><color=#00FFAA>W</color><color=#00A9FF>A</color><color=#0000FF>T</color><color=#AA00FF>C</color><color=#FF00AA>H</color>";
+
+                GameObject desc = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/COC Text");
+                desc.GetComponent<TextMeshPro>().richText = true;
+                desc.GetComponent<TextMeshPro>().text = new WebClient().DownloadString("https://pastebin.com/raw/wErPZy4f").ToUpper();
+
+                new GameObject("EveWatch").AddComponent<Visual>();
+
+                PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable()
+                {
+                    {"EveWatch", true}
+                });
+
+                Debug.Log("EveWatch Has Loaded Successfully");
+                doneDeletion = true;
+            });
+        }
         void Update()
         {
-            huntComputer = GorillaTagger.Instance.offlineVRRig.huntComputer.GetComponent<GorillaHuntComputer>();
-            if (InModded() && GorillaTagger.Instance.offlineVRRig != null)
+            if (!doneDeletion) return;
+
+            if ((ControllerInputPoller.instance.leftControllerSecondaryButton && !lastY) || Keyboard.current.hKey.wasPressedThisFrame) hideAndLock = !hideAndLock;
+
+            if (!hideAndLock)
             {
-                if (!doneDeletion)
+                huntComputer.gameObject.SetActive(true);
+                if ((ControllerInputPoller.instance.leftControllerIndexFloat >= .5f || Keyboard.current.rightArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
                 {
-                    huntText = huntComputer.text;
-                    huntText.transform.localPosition = new Vector3(0.023f, 0.0004f, 0);
-                    huntText.transform.localScale = new Vector3(0.0006f, 0.0006f, 0.0006f);
-                    huntText.rectTransform.sizeDelta = new Vector2(160f, 60f);
-                    huntComputer.enabled = false;
-                    Destroy(huntComputer.badge);
-                    Destroy(huntComputer.leftHand);
-                    Destroy(huntComputer.rightHand);
-                    Destroy(huntComputer.hat);
-                    Destroy(huntComputer.face);
-                    Material mat = new Material(huntComputer.material.material);
-                    huntComputer.material.material = mat;
-                    huntComputer.material.transform.localPosition = new Vector3(0.0197f, -0.0096f, 0);
-                    foreach(Transform obj in huntComputer.material.transform.parent)
-                    {
-                        if (obj.name != "Text" && obj.name != "Material") GameObject.Destroy(obj.gameObject);
-                    }
-                    button = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    button.transform.SetParent(huntComputer.material.transform, false);
-                    button.GetComponent<Renderer>().material.shader = Shader.Find("GorillaTag/UberShader");
-                    button.AddComponent<Librarys.Button>();
-                    button.transform.localScale = new Vector3(12, 12, 10);
-                    button.layer = 18;
-                    button.GetComponent<BoxCollider>().isTrigger = true;
-                    Destroy(button.GetComponent<Renderer>());
-                    Destroy(button.GetComponent<MeshFilter>());
-
-                    GameObject title = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/CodeOfConduct");
-                    title.GetComponent<TextMeshPro>().richText = true;
-                    title.GetComponent<TextMeshPro>().text = "<color=#FF0000>E</color><color=#FFAA00>V</color><color=#AAFF00>E</color><color=#00FFAA>W</color><color=#00A9FF>A</color><color=#0000FF>T</color><color=#AA00FF>C</color><color=#FF00AA>H</color>";
-
-                    GameObject desc = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/COC Text");
-                    desc.GetComponent<TextMeshPro>().richText = true;
-                    desc.GetComponent<TextMeshPro>().text = new WebClient().DownloadString("https://pastebin.com/raw/wErPZy4f").ToUpper();
-                    new GameObject("EveWatch").AddComponent<Visual>();
-
-                    Hashtable hash = new Hashtable()
-                    {
-                        {"EveWatch", true}
-                    };
-
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-
-                    Debug.Log("EveWatch Has Loaded Successfully");
-                    doneDeletion = true;
+                    PageCoolDown = Time.time;
+                    counter++;
+                    lookedAtMainPage = true;
+                    GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 1f);
                 }
-
-                if ((ControllerInputPoller.instance.leftControllerSecondaryButton && !lastY) || Keyboard.current.hKey.wasPressedThisFrame) hideAndLock = !hideAndLock;
-
-                if (!hideAndLock)
+                if ((ControllerInputPoller.instance.leftControllerGripFloat >= .5f || Keyboard.current.leftArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
                 {
-                    huntComputer.gameObject.SetActive(true);
-                    if ((ControllerInputPoller.instance.leftControllerIndexFloat >= .5f || Keyboard.current.rightArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
-                    {
-                        PageCoolDown = Time.time;
-                        counter++;
-                        lookedAtMainPage = true;
-                        GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 1f);
-                    }
-                    if ((ControllerInputPoller.instance.leftControllerGripFloat >= .5f || Keyboard.current.leftArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
-                    {
-                        PageCoolDown = Time.time;
-                        counter--;
-                        lookedAtMainPage = true;
-                        GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 1f);
-                    }
-                    if (counter < (lookedAtMainPage ? 1 : 0)) counter = modCount;
-                    if (counter > modCount) counter = (lookedAtMainPage ? 1 : 0);
-
-                    if (counter != 0)
-                    {
-                        huntText.text = $"{Mods.ElementAt(counter).Key.Name} ({counter}/{modCount})\n{Mods.ElementAt(counter).Key.Desc}".ToUpper();
-                        if ((ControllerInputPoller.instance.leftControllerPrimaryButton || Keyboard.current.enterKey.isPressed) && Time.time > PageCoolDown + .5)
-                        {
-                            Toggle();
-                        }
-                    }
-                    else huntText.text = Mods.ElementAt(counter).Key.Name + "\n" + Mods.ElementAt(counter).Key.Desc;
-
-                    if (counter == 0) huntComputer.material.enabled = false;
-                    else huntComputer.material.enabled = true;
-
-                    if (Mods.ElementAt(counter).Value) huntComputer.material.material.color = Color.green;
-                    else huntComputer.material.material.color = new Color(1, 0, 0, 255);
+                    PageCoolDown = Time.time;
+                    counter--;
+                    lookedAtMainPage = true;
+                    GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 1f);
                 }
-                else
-                {
-                    huntComputer.gameObject.SetActive(false);
-                }
+                if (counter < (lookedAtMainPage ? 1 : 0)) counter = modCount;
+                if (counter > modCount) counter = (lookedAtMainPage ? 1 : 0);
 
-                foreach (var modInfo in Mods)
+                if (counter != 0)
                 {
-                    if (modInfo.Value == true)
+                    huntText.text = $"{Mods.ElementAt(counter).Key.Name} ({counter}/{modCount})\n{Mods.ElementAt(counter).Key.Desc}".ToUpper();
+                    if ((ControllerInputPoller.instance.leftControllerPrimaryButton || Keyboard.current.enterKey.isPressed) && Time.time > PageCoolDown + .5)
                     {
-                        modInfo.Key.StayEnabledMethod();
+                        Toggle();
                     }
                 }
+                else huntText.text = Mods.ElementAt(counter).Key.Name + "\n" + Mods.ElementAt(counter).Key.Desc;
 
-                lastY = ControllerInputPoller.instance.leftControllerSecondaryButton;
-            }else huntComputer.gameObject.SetActive(false);
+                if (counter == 0) huntComputer.material.enabled = false;
+                else huntComputer.material.enabled = true;
+
+                if (Mods.ElementAt(counter).Value) huntComputer.material.material.color = Color.green;
+                else huntComputer.material.material.color = new Color(1, 0, 0, 255);
+            }
+            else
+            {
+                huntComputer.gameObject.SetActive(false);
+            }
+
+            foreach (var modInfo in Mods)
+            {
+                if (modInfo.Value == true)
+                {
+                    modInfo.Key.StayEnabledMethod();
+                }
+            }
+
+            lastY = ControllerInputPoller.instance.leftControllerSecondaryButton;
         }
-        void Empty(){} //Used for the mods and if you want them to be empty!
+        void Empty() { } //Used for the mods and if you want them to be empty!
 
         public static void Toggle()
         {
@@ -206,21 +211,11 @@ namespace EveWatch
 
         public static Mod GetMod(string name)
         {
-            foreach(Mod mod in Mods.Keys)
+            foreach (Mod mod in Mods.Keys)
             {
                 if (mod.Name == name) return mod;
             }
             return null;
-        }
-
-        bool InModded()
-        {
-            //if (PhotonNetwork.InRoom)
-            //{
-            //    return PhotonNetwork.CurrentRoom.CustomProperties["gameMode"].ToString().Contains("MODDED");
-            //}
-            //return false;
-            return true;
         }
     }
 
