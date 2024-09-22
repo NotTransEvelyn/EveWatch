@@ -33,44 +33,6 @@ namespace EveWatch
 
         void Start()
         {
-            Movement.SwitchBoostType(true);
-            Infection.SwitchTagType(true);
-            Mods = new Dictionary<Mod, bool>()
-            {
-                //Title
-                { new Mod("Eve Watch!", "Welcome to\nEveWatch! Look at\nthe CoC board\nfor the controls!", Empty, Empty, Empty), false},
-
-                //Room
-                { new Mod("Disconnect","Makes you leave\nthe lobby!", ()=>NetworkSystem.Instance.ReturnToSinglePlayer(), Empty, Empty, true), false },
-
-                //Movement
-                { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
-                { new Mod("Speed Boost", $"Type: {Movement.CurrentSpeedName}\nGives you a\nlittle boost\nin speed!", Empty, Movement.SpeedBoost, Movement.DisableSpeedBoost), false },
-                { new Mod("No Tag Freeze", "Just no tag\nfreeze pretty easy\nto understand.", Empty, ()=>GorillaLocomotion.Player.Instance.disableMovement = false, Empty), false },
-
-                //Infection
-                { new Mod("Tag Aura", $"Type: {Infection.CurrentTagAuraName}\nLets you tag\npeople easier!", Empty, ()=>Infection.TagAura(), Empty), false },
-
-                //Flights
-                { new Mod("Flight", "Press A to\nfly!", Empty, Movement.Fly, Empty), false },
-                { new Mod("Iron Monk", "Press grip to\nfly like iron\nman!", Empty, Movement.IronMonk, Empty), false },
-
-                //Visual
-                { new Mod("Tracers", "Tracers to every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.Tracers, Empty, Visual.DisableTracers), false },
-                { new Mod("Box ESP", "Boxes around every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.BoxESP, Empty, Visual.DisableBoxESP), false },
-                { new Mod("Watch ESP", "Boxes around every\nEvewatch user!", Visual.WatchESP, Empty, Visual.DisableWatchESP), false },
-
-                //Guns
-                { new Mod("Tp Gun", "Teleport around\nwith a gun!", Empty, Guns.TpGun, Empty), false },
-                { new Mod("Button Gun", "Press buttons\nwith a gun!", Empty, Guns.ButtonGun, Empty), false },
-
-                //Settings
-                { new Mod("Change Speed", $"Changes your speed\nboost, boost.\nType: {Movement.CurrentSpeedName}", ()=>Movement.SwitchBoostType(), Empty, Empty, true), false },
-                { new Mod("Change Distance", $"Distance: {Infection.CurrentTagAuraName}\nChanges your\nTag Aura Distance", ()=>Infection.SwitchTagType(), Empty, Empty, true), false },
-                { new Mod("Swap Theme","Changes the menus\ntheme!", Themes.SwitchTheme, Empty, Empty, true), false },
-            };
-            modCount = Mods.Count - 1;
-
             GorillaTagger.OnPlayerSpawned(delegate
             {
                 huntComputer = GorillaTagger.Instance.offlineVRRig.huntComputer.GetComponent<GorillaHuntComputer>();
@@ -112,8 +74,6 @@ namespace EveWatch
                 GameObject desc = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/COC Text");
                 desc.GetComponent<TextMeshPro>().richText = true;
                 desc.GetComponent<TextMeshPro>().text = new WebClient().DownloadString("https://pastebin.com/raw/wErPZy4f").ToUpper();
-
-                new GameObject("EveWatch").AddComponent<Visual>();
 
                 PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable()
                 {
