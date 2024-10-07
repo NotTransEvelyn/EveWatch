@@ -46,7 +46,7 @@ namespace EveWatch.Mods
                                 line.endWidth = 0.001f;
                             }
 
-                            if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1)
+                            if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1 && !vRRig.skeleton.renderer.enabled)
                             {
                                 vRRig.headConstraint.GetComponent<LineRenderer>().startColor = Color.green;
                                 vRRig.headConstraint.GetComponent<LineRenderer>().endColor = Color.green;
@@ -105,8 +105,7 @@ namespace EveWatch.Mods
                             text.alignment = TextAlignment.Center;
                             text.anchor = TextAnchor.MiddleCenter;
                             text.fontSize = 1000;
-
-                            if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1) text.color = Color.green;
+                            if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1 && !vRRig.skeleton.renderer.enabled) text.color = Color.green;
                             else text.color = Color.red;
                         }
                     }
