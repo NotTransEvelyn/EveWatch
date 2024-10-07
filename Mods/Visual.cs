@@ -26,6 +26,19 @@ namespace EveWatch.Mods
         public static void DisableWatchESP() => WatchEspEnabled = false;
         #endregion
 
+        #region SkellESP
+        static bool SkellEspEnabled;
+        public static void SkellESP() => SkellEspEnabled = true;
+        public static void DisableSkellESP()
+        {
+            SkellEspEnabled = false;
+            foreach(VRRig rig in Resources.FindObjectsOfTypeAll<VRRig>())
+            {
+                rig.ShowSkeleton(false);
+            }
+        }
+        #endregion
+
         void Update()
         {
             #region Tracers
@@ -45,16 +58,31 @@ namespace EveWatch.Mods
                                 line.startWidth = 0.001f;
                                 line.endWidth = 0.001f;
                             }
-
-                            if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1 && !vRRig.skeleton.renderer.enabled)
+                            if (SkellEspEnabled)
                             {
-                                vRRig.headConstraint.GetComponent<LineRenderer>().startColor = Color.green;
-                                vRRig.headConstraint.GetComponent<LineRenderer>().endColor = Color.green;
+                                if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1)
+                                {
+                                    vRRig.headConstraint.GetComponent<LineRenderer>().startColor = Color.green;
+                                    vRRig.headConstraint.GetComponent<LineRenderer>().endColor = Color.green;
+                                }
+                                else
+                                {
+                                    vRRig.headConstraint.GetComponent<LineRenderer>().startColor = Color.red;
+                                    vRRig.headConstraint.GetComponent<LineRenderer>().endColor = Color.red;
+                                }
                             }
                             else
                             {
-                                vRRig.headConstraint.GetComponent<LineRenderer>().startColor = Color.red;
-                                vRRig.headConstraint.GetComponent<LineRenderer>().endColor = Color.red;
+                                if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1 && !vRRig.skeleton.renderer.enabled)
+                                {
+                                    vRRig.headConstraint.GetComponent<LineRenderer>().startColor = Color.green;
+                                    vRRig.headConstraint.GetComponent<LineRenderer>().endColor = Color.green;
+                                }
+                                else
+                                {
+                                    vRRig.headConstraint.GetComponent<LineRenderer>().startColor = Color.red;
+                                    vRRig.headConstraint.GetComponent<LineRenderer>().endColor = Color.red;
+                                }
                             }
                             vRRig.headConstraint.GetComponent<LineRenderer>().SetPosition(1, GorillaTagger.Instance.offlineVRRig.rightHandTransform.position);
                             vRRig.headConstraint.GetComponent<LineRenderer>().SetPosition(0, vRRig.headConstraint.position);
@@ -105,8 +133,16 @@ namespace EveWatch.Mods
                             text.alignment = TextAlignment.Center;
                             text.anchor = TextAnchor.MiddleCenter;
                             text.fontSize = 1000;
-                            if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1 && !vRRig.skeleton.renderer.enabled) text.color = Color.green;
-                            else text.color = Color.red;
+                            if (SkellEspEnabled)
+                            {
+                                if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1) text.color = Color.green;
+                                else text.color = Color.red;
+                            }
+                            else
+                            {
+                                if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1 && !vRRig.skeleton.renderer.enabled) text.color = Color.green;
+                                else text.color = Color.red;
+                            }
                         }
                     }
                 }
@@ -154,6 +190,27 @@ namespace EveWatch.Mods
             else
             {
                 if (PhotonNetwork.InRoom) foreach (var wawa in NetworkSystem.Instance.AllNetPlayers) if (!GorillaTagManager.instance.FindPlayerVRRig(wawa).isLocal && wawa.GetPlayerRef().CustomProperties.ContainsKey("EveWatch")) if (GorillaTagManager.instance.FindPlayerVRRig(wawa).transform.Find("WATCHESP") != null) Destroy(GorillaTagManager.instance.FindPlayerVRRig(wawa).transform.Find("WATCHESP").gameObject);
+            }
+            #endregion
+
+            #region SkellEsp
+            if (SkellEspEnabled)
+            {
+                if (PhotonNetwork.InRoom)
+                {
+                    foreach (var wawa in NetworkSystem.Instance.AllNetPlayers)
+                    {
+                        VRRig vRRig = GorillaTagManager.instance.FindPlayerVRRig(wawa);
+                        if (!vRRig.isLocal)
+                        {
+                            vRRig.ShowSkeleton(true);
+                            vRRig.skeleton.renderer.material.shader = Shader.Find("GUI/Text Shader");
+
+                            if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1) vRRig.skeleton.renderer.material.color = Color.green;
+                            else vRRig.skeleton.renderer.material.color = Color.red;
+                        }
+                    }
+                }
             }
             #endregion
         }

@@ -59,6 +59,7 @@ namespace EveWatch
                 { new Mod("Tracers", "Tracers to every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.Tracers, Empty, Visual.DisableTracers), false },
                 { new Mod("Box ESP", "Boxes around every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.BoxESP, Empty, Visual.DisableBoxESP), false },
                 { new Mod("Watch ESP", "Boxes around every\nEvewatch user!", Visual.WatchESP, Empty, Visual.DisableWatchESP), false },
+                { new Mod("Skell ESP", "Turns everyone\ninto skels\nthat you can see\nthrough\nwalls!", Visual.SkellESP, Empty, Visual.DisableSkellESP), false },
 
                 //Lucy
                 { new Mod("Blue Grab", "Summon blue lucy on\na player!", Empty, ()=>Lucy.LucyGun(false, false), Empty), false },
