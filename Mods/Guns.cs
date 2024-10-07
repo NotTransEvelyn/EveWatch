@@ -36,7 +36,7 @@ namespace EveWatch.Mods
         }
         #endregion
 
-        #region Tp Gun
+        #region Button Gun
         static bool lastTriggedButton;
         public static void ButtonGun()
         {
@@ -44,8 +44,6 @@ namespace EveWatch.Mods
 
             if (gunLibData.isTriggered && gunLibData.isShooting && !lastTriggedButton)
             {
-                Camera.main.transform.localPosition = Vector3.zero;
-
                 GorillaTagger.Instance.leftHandTriggerCollider.GetComponent<TransformFollow>().enabled = false;
                 GorillaTagger.Instance.leftHandTriggerCollider.transform.position = gunLibData.hitPosition;
                 GorillaTagger.Instance.leftHandTriggerCollider.GetComponent<TransformFollow>().enabled = true;

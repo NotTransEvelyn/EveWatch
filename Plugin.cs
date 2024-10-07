@@ -61,6 +61,9 @@ namespace EveWatch
                 { new Mod("Box ESP", "Boxes around every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.BoxESP, Empty, Visual.DisableBoxESP), false },
                 { new Mod("Watch ESP", "Boxes around every\nEvewatch user!", Visual.WatchESP, Empty, Visual.DisableWatchESP), false },
 
+                //Lucy
+                { new Mod("Lucy Gun", "Summon lucy on a player!", Empty, Lucy.LucyGun, Empty), false },
+
                 //Guns
                 { new Mod("Tp Gun", "Teleport around\nwith a gun!", Empty, Guns.TpGun, Empty), false },
                 { new Mod("Button Gun", "Press buttons\nwith a gun!", Empty, Guns.ButtonGun, Empty), false },
