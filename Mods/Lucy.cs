@@ -10,13 +10,13 @@ namespace EveWatch.Mods
     public class Lucy
     {
         static bool lastTriggedButton;
-        public static void LucyGun()
+        public static void LucyGun(bool summoned, bool chase)
         {
             GunLib.GunLibData gunLibData = GunLib.ShootLock();
 
             if (gunLibData.isTriggered && gunLibData.isShooting && !lastTriggedButton && gunLibData.isLocked)
             {
-                LucyShoot(false, false, gunLibData.lockedPlayer.Creator);
+                LucyShoot(false, summoned, gunLibData.lockedPlayer.Creator);
             }
             lastTriggedButton = gunLibData.isTriggered;
         }

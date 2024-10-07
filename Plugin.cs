@@ -9,12 +9,11 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using System.Net;
 using TMPro;
-using static Photon.Pun.UtilityScripts.TabViewManager;
 using ExitGames.Client.Photon;
 
 namespace EveWatch
 {
-    [BepInPlugin("Eve.EveWatch", "EveWatch", "1.4.0")]
+    [BepInPlugin("Eve.EveWatch", "EveWatch", "1.0.0")]
     public class Main : BaseUnityPlugin
     {
         static int counter;
@@ -62,7 +61,11 @@ namespace EveWatch
                 { new Mod("Watch ESP", "Boxes around every\nEvewatch user!", Visual.WatchESP, Empty, Visual.DisableWatchESP), false },
 
                 //Lucy
-                { new Mod("Lucy Gun", "Summon lucy on a player!", Empty, Lucy.LucyGun, Empty), false },
+                { new Mod("Blue Lucy Gun", "Summon blue lucy on\na player!", Empty, ()=>Lucy.LucyGun(false, false), Empty), false },
+                { new Mod("Blue Red Gun", "Summon red lucy on\na player!", Empty, ()=>Lucy.LucyGun(true, false), Empty), false },
+
+                { new Mod("Blue Chase Gun", "Make blue lucy chase\na player!", Empty, ()=>Lucy.LucyGun(false, true), Empty), false },
+                { new Mod("Red Chase Gun", "Make red lucy chase\na player!", Empty, ()=>Lucy.LucyGun(true, true), Empty), false },
 
                 //Guns
                 { new Mod("Tp Gun", "Teleport around\nwith a gun!", Empty, Guns.TpGun, Empty), false },
