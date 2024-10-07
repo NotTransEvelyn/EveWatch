@@ -46,7 +46,7 @@ namespace EveWatch
                 //Movement
                 { new Mod("Platforms","Press grip to\nuse them!", Empty, Movement.Platforms, Movement.OnPlatformDisable), false },
                 { new Mod("Speed Boost", $"Type: {Movement.CurrentSpeedName}\nGives you a\nlittle boost\nin speed!", Empty, Movement.SpeedBoost, Movement.DisableSpeedBoost), false },
-                { new Mod("No Tag Freeze", "Just no tag\nfreeze pretty easy\nto understand.", Empty, ()=>GorillaLocomotion.Player.Instance.disableMovement = false, Empty), false },
+                { new Mod("No Freeze", "Just no tag\nfreeze pretty easy\nto understand.", Empty, ()=>GorillaLocomotion.Player.Instance.disableMovement = false, Empty), false },
 
                 //Infection
                 { new Mod("Tag Aura", $"Type: {Infection.CurrentTagAuraName}\nLets you tag\npeople easier!", Empty, ()=>Infection.TagAura(), Empty), false },
@@ -61,20 +61,19 @@ namespace EveWatch
                 { new Mod("Watch ESP", "Boxes around every\nEvewatch user!", Visual.WatchESP, Empty, Visual.DisableWatchESP), false },
 
                 //Lucy
-                { new Mod("Blue Lucy Gun", "Summon blue lucy on\na player!", Empty, ()=>Lucy.LucyGun(false, false), Empty), false },
-                { new Mod("Blue Red Gun", "Summon red lucy on\na player!", Empty, ()=>Lucy.LucyGun(true, false), Empty), false },
+                { new Mod("Blue Grab", "Summon blue lucy on\na player!", Empty, ()=>Lucy.LucyGun(false, false), Empty), false },
+                { new Mod("Red Grab", "Summon red lucy on\na player!", Empty, ()=>Lucy.LucyGun(true, false), Empty), false },
 
-                { new Mod("Blue Chase Gun", "Make blue lucy chase\na player!", Empty, ()=>Lucy.LucyGun(false, true), Empty), false },
-                { new Mod("Red Chase Gun", "Make red lucy chase\na player!", Empty, ()=>Lucy.LucyGun(true, true), Empty), false },
+                { new Mod("Blue Chase", "Make blue lucy\nchase a player!", Empty, ()=>Lucy.LucyGun(false, true), Empty), false },
+                { new Mod("Red Chase", "Make red lucy\nchase a player!", Empty, ()=>Lucy.LucyGun(true, true), Empty), false },
 
                 //Guns
                 { new Mod("Tp Gun", "Teleport around\nwith a gun!", Empty, Guns.TpGun, Empty), false },
                 { new Mod("Button Gun", "Press buttons\nwith a gun!", Empty, Guns.ButtonGun, Empty), false },
 
                 //Settings
-                { new Mod("Change Speed", $"Changes your speed\nboost, boost.\nType: {Movement.CurrentSpeedName}", ()=>Movement.SwitchBoostType(), Empty, Empty, true), false },
-                { new Mod("Change Distance", $"Distance: {Infection.CurrentTagAuraName}\nChanges your\nTag Aura Distance", ()=>Infection.SwitchTagType(), Empty, Empty, true), false },
-                { new Mod("Swap Theme","Changes the menus\ntheme!", Themes.SwitchTheme, Empty, Empty, true), false },
+                { new Mod("Swap Speed", $"Changes your speed\nboost, boost.\nType: {Movement.CurrentSpeedName}", ()=>Movement.SwitchBoostType(), Empty, Empty, true), false },
+                { new Mod("Tag Dist", $"Distance: {Infection.CurrentTagAuraName}\nChanges your\nTag Aura Distance", ()=>Infection.SwitchTagType(), Empty, Empty, true), false },
             };
             modCount = Mods.Count - 1;
 
