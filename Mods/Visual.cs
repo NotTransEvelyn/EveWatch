@@ -46,14 +46,25 @@ namespace EveWatch.Mods
         public static void TagAuraRad()
         {
             tagAuraRadiusEnabled = true;
-            radius = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            radius.transform.localScale = new Vector3(1, 0.01f, 1);
-            radius.GetComponent<Renderer>().material.shader = Shader.Find("GUI/Text Shader");
-            radius.GetComponent<Renderer>().material.color = new Color(0.66666666666f, 0, 1, 0.5f);
+            if (PhotonNetwork.InRoom && (GorillaTagger.Instance.offlineVRRig.setMatIndex == 2 || GorillaTagger.Instance.offlineVRRig.setMatIndex == 1))
+            {
+                CreateThing();
+            }
+        }
 
-            Destroy(radius.GetComponent<Collider>());
-            radius.transform.SetParent(GorillaTagger.Instance.offlineVRRig.transform, false);
-            radius.transform.localPosition = new Vector3(0, -0.5f, 0);
+        static void CreateThing()
+        {
+            if (radius == null)
+            {
+                radius = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                radius.transform.localScale = new Vector3(1, 0.01f, 1);
+                radius.GetComponent<Renderer>().material.shader = Shader.Find("GUI/Text Shader");
+                radius.GetComponent<Renderer>().material.color = new Color(0.66666666666f, 0, 1, 0.5f);
+
+                Destroy(radius.GetComponent<Collider>());
+                radius.transform.SetParent(GorillaTagger.Instance.offlineVRRig.transform, false);
+                radius.transform.localPosition = new Vector3(0, -0.5f, 0);
+            }
         }
 
         public static void TagAuraRadDisable()
@@ -243,14 +254,22 @@ namespace EveWatch.Mods
             #endregion
 
             #region Tag Aura Radius
-            if (tagAuraRadiusEnabled)
+            if (tagAuraRadiusEnabled && PhotonNetwork.InRoom)
             {
-                if (radius != null)
+                if (GorillaTagger.Instance.offlineVRRig.setMatIndex == 2 || GorillaTagger.Instance.offlineVRRig.setMatIndex == 1)
                 {
-                    float distance = 0;
-                    distance = Infection.dist;
-                    distance = distance * 2f;
-                    radius.transform.localScale = new Vector3(distance, 0.0001f, distance);
+                    CreateThing();
+                    if (radius != null)
+                    {
+                        float distance = 0;
+                        distance = Infection.dist;
+                        distance = distance * 2;
+                        radius.transform.localScale = new Vector3(distance, 0.0001f, distance);
+                    }
+                }
+                else
+                {
+                    GameObject.Destroy(radius);
                 }
             }
             #endregion
