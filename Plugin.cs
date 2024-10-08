@@ -60,7 +60,7 @@ namespace EveWatch
                 { new Mod("Box ESP", "Boxes around every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.BoxESP, Empty, Visual.DisableBoxESP), false },
                 { new Mod("Watch ESP", "Boxes around every\nEvewatch user!", Visual.WatchESP, Empty, Visual.DisableWatchESP), false },
                 { new Mod("Skell ESP", "Turns everyone\ninto skels\nthat you can see\nthrough\nwalls!", Visual.SkellESP, Empty, Visual.DisableSkellESP), false },
-                { new Mod("Aura Rad", "Shows the radius\nof the tag\naura!", Visual.TagAuraRad, Empty, Visual.DisableSkellESP), false },
+                { new Mod("Aura Rad", "Shows the radius\nof the tag\naura!", Visual.TagAuraRad, Empty, Visual.TagAuraRadDisable), false },
 
                 //Lucy
                 { new Mod("Blue Grab", "Summon blue lucy on\na player!", Empty, ()=>Lucy.LucyGun(false, false), Empty), false },

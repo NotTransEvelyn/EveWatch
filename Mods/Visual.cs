@@ -45,6 +45,7 @@ namespace EveWatch.Mods
         static GameObject radius;
         public static void TagAuraRad()
         {
+            tagAuraRadiusEnabled = true;
             radius = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             radius.transform.localScale = new Vector3(1, 0.01f, 1);
             radius.GetComponent<Renderer>().material.shader = Shader.Find("GUI/Text Shader");
@@ -246,7 +247,7 @@ namespace EveWatch.Mods
             {
                 if (radius != null)
                 {
-                    radius.transform.localScale = new Vector3(Infection.tagAuraAndDist.ElementAt(Infection.currentTagAuraIndex).Value, 0.0001f, Infection.tagAuraAndDist.ElementAt(Infection.currentTagAuraIndex).Value);
+                    radius.transform.localScale = new Vector3(Infection.dist, 0.0001f, Infection.dist);
                 }
             }
             #endregion
