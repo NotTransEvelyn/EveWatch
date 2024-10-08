@@ -13,7 +13,7 @@ using ExitGames.Client.Photon;
 
 namespace EveWatch
 {
-    [BepInPlugin("Eve.EveWatch", "EveWatch", "0.1.4")]
+    [BepInPlugin("Eve.EveWatch", "EveWatch", "0.1.5")]
     public class Main : BaseUnityPlugin
     {
         static int counter;

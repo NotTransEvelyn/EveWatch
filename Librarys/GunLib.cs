@@ -168,7 +168,7 @@ namespace EveWatch.Librarys
                 if (data.isShooting)
                 {
                     Renderer pr = pointer?.GetComponent<Renderer>();
-                    if (Physics.Raycast(controller.position - controller.up, -controller.up, out RaycastHit hit) && pointer == null)
+                    if (Physics.Raycast(controller.position - controller.up, -controller.up, out RaycastHit hit, Mathf.Infinity, GorillaLocomotion.Player.Instance.locomotionEnabledLayers) && pointer == null)
                     {
                         pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         GameObject.Destroy(pointer.GetComponent<SphereCollider>());
