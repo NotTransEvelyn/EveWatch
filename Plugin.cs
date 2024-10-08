@@ -13,7 +13,7 @@ using ExitGames.Client.Photon;
 
 namespace EveWatch
 {
-    [BepInPlugin("Eve.EveWatch", "EveWatch", "1.0.0")]
+    [BepInPlugin("Eve.EveWatch", "EveWatch", "0.1.3")]
     public class Main : BaseUnityPlugin
     {
         static int counter;
@@ -60,6 +60,7 @@ namespace EveWatch
                 { new Mod("Box ESP", "Boxes around every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.BoxESP, Empty, Visual.DisableBoxESP), false },
                 { new Mod("Watch ESP", "Boxes around every\nEvewatch user!", Visual.WatchESP, Empty, Visual.DisableWatchESP), false },
                 { new Mod("Skell ESP", "Turns everyone\ninto skels\nthat you can see\nthrough\nwalls!", Visual.SkellESP, Empty, Visual.DisableSkellESP), false },
+                { new Mod("Aura Rad", "Shows the radius\nof the tag\naura!", Visual.TagAuraRad, Empty, Visual.DisableSkellESP), false },
 
                 //Lucy
                 { new Mod("Blue Grab", "Summon blue lucy on\na player!", Empty, ()=>Lucy.LucyGun(false, false), Empty), false },
@@ -140,14 +141,14 @@ namespace EveWatch
             if (!hideAndLock)
             {
                 huntComputer.gameObject.SetActive(true);
-                if ((ControllerInputPoller.instance.leftControllerIndexFloat >= .5f || Keyboard.current.rightArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
+                if ((ControllerInputPoller.instance.leftControllerIndexFloat >= .5f || Keyboard.current.rightArrowKey.isPressed) && Time.time > PageCoolDown + 0.25)
                 {
                     PageCoolDown = Time.time;
                     counter++;
                     lookedAtMainPage = true;
                     GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 1f);
                 }
-                if ((ControllerInputPoller.instance.leftControllerGripFloat >= .5f || Keyboard.current.leftArrowKey.isPressed) && Time.time > PageCoolDown + 0.5)
+                if ((ControllerInputPoller.instance.leftControllerGripFloat >= .5f || Keyboard.current.leftArrowKey.isPressed) && Time.time > PageCoolDown + 0.25)
                 {
                     PageCoolDown = Time.time;
                     counter--;

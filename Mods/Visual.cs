@@ -39,6 +39,21 @@ namespace EveWatch.Mods
         }
         #endregion
 
+        #region Tag Aura Radius
+        static bool tagAuraRadiusEnabled;
+        static GameObject radius;
+        public static void TagAuraRad()
+        {
+            radius = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            radius.transform.localScale = new Vector3(1, 0.01f, 1);
+            radius.GetComponent<Renderer>().material.shader = Shader.Find("GUI/Text Shader");
+            radius.GetComponent<Renderer>().material.color = new Color(0.66666666666f, 0, 1, 0.5f);
+
+            Destroy(radius.GetComponent<Collider>());
+            radius.transform.SetParent(GorillaLocomotion.Player.Instance.transform.parent, false);
+        }
+        #endregion
+
         void Update()
         {
             #region Tracers
@@ -183,6 +198,10 @@ namespace EveWatch.Mods
 
                                 text.color = Color.yellow;
                             }
+                        }else
+                        {
+                            VRRig vRRig = GorillaTagManager.instance.FindPlayerVRRig(wawa);
+                            if (vRRig.transform.Find("WATCHESP") != null) Destroy(vRRig.transform.Find("WATCHESP").gameObject);
                         }
                     }
                 }

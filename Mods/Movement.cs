@@ -145,12 +145,12 @@ namespace EveWatch.Mods
         {
             if (ControllerInputPoller.instance.leftControllerGripFloat > .5)
             {
-                GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(10 * GorillaTagger.Instance.offlineVRRig.transform.Find("rig/body/shoulder.L/upper_arm.L/forearm.L/hand.L").right, ForceMode.Acceleration);
+                GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(10 * GorillaTagger.Instance.offlineVRRig.transform.Find("RigAnchor/rig/body/shoulder.L/upper_arm.L/forearm.L/hand.L").right, ForceMode.Acceleration);
                 GorillaTagger.Instance.StartVibration(true, GorillaTagger.Instance.tapHapticStrength / 50f * GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.velocity.magnitude, GorillaTagger.Instance.tapHapticDuration);
             }
             if (ControllerInputPoller.instance.rightControllerGripFloat > .5)
             {
-                GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(10 * -GorillaTagger.Instance.offlineVRRig.transform.Find("rig/body/shoulder.R/upper_arm.R/forearm.R/hand.R").right, ForceMode.Acceleration);
+                GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.AddForce(10 * -GorillaTagger.Instance.offlineVRRig.transform.Find("RigAnchor/rig/body/shoulder.R/upper_arm.R/forearm.R/hand.R").right, ForceMode.Acceleration);
                 GorillaTagger.Instance.StartVibration(false, GorillaTagger.Instance.tapHapticStrength / 50f * GorillaLocomotion.Player.Instance.bodyCollider.attachedRigidbody.velocity.magnitude, GorillaTagger.Instance.tapHapticDuration);
             }
         }
@@ -176,7 +176,7 @@ namespace EveWatch.Mods
             CurrentSpeed = boostAndSpeed.ElementAt(currentSpeedIndex).Value;
             if (!foo)
             {
-                Main.GetMod("Change Speed").Desc = $"Changes your speed\nboost, boost.\nType: {Movement.CurrentSpeedName}";
+                Main.GetMod("Swap Speed").Desc = $"Changes your speed\nboost, boost.\nType: {Movement.CurrentSpeedName}";
                 Main.GetMod("Speed Boost").Desc = $"Type: {Movement.CurrentSpeedName}\nGives you a\nlittle boost\nin speed!";
             }
         }
