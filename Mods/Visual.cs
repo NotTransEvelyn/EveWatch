@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -50,7 +51,14 @@ namespace EveWatch.Mods
             radius.GetComponent<Renderer>().material.color = new Color(0.66666666666f, 0, 1, 0.5f);
 
             Destroy(radius.GetComponent<Collider>());
-            radius.transform.SetParent(GorillaLocomotion.Player.Instance.transform.parent, false);
+            radius.transform.SetParent(GorillaTagger.Instance.offlineVRRig.transform, false);
+            radius.transform.localPosition = new Vector3(0, -0.5f, 0);
+        }
+
+        public static void TagAuraRadDisable()
+        {
+            tagAuraRadiusEnabled = false;
+            GameObject.Destroy(radius);
         }
         #endregion
 
@@ -229,6 +237,16 @@ namespace EveWatch.Mods
                             else vRRig.skeleton.renderer.material.color = Color.red;
                         }
                     }
+                }
+            }
+            #endregion
+
+            #region Tag Aura Radius
+            if (tagAuraRadiusEnabled)
+            {
+                if (radius != null)
+                {
+                    radius.transform.localScale = new Vector3(Infection.tagAuraAndDist.ElementAt(Infection.currentTagAuraIndex).Value, 0.0001f, Infection.tagAuraAndDist.ElementAt(Infection.currentTagAuraIndex).Value);
                 }
             }
             #endregion

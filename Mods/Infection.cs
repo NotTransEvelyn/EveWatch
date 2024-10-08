@@ -19,14 +19,14 @@ namespace EveWatch.Mods
         #endregion
 
         #region TagAura
-        static Dictionary<string, float> tagAuraAndDist = new Dictionary<string, float>()
+        public static Dictionary<string, float> tagAuraAndDist = new Dictionary<string, float>()
         {
             { "Short", 1 },
             { "Comp", 1.5f },
             { "Extreme", 5 },
         };
 
-        static int currentTagAuraIndex;
+        public static int currentTagAuraIndex;
 
         public static string CurrentTagAuraName;
         static float dist;
