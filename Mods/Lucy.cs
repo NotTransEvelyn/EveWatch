@@ -28,9 +28,9 @@ namespace EveWatch.Mods
             if (lucy.IsMine)
             {
                 lucy.grabTime = Time.time;
+                lucy.isSummoned = summonded;
                 lucy.currentState = chase ? HalloweenGhostChaser.ChaseState.Chasing : HalloweenGhostChaser.ChaseState.Grabbing;
                 lucy.targetPlayer = player;
-                lucy.isSummoned = summonded;
             }
         }
     }

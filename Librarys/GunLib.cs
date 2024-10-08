@@ -71,7 +71,7 @@ namespace EveWatch.Librarys
                     Renderer pr = pointer?.GetComponent<Renderer>();
                     if (data.lockedPlayer == null && !data.isLocked)
                     {
-                        if (Physics.Raycast(controller.position - controller.up, -controller.up, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Gorilla Tag Collider")) && pointer == null)
+                        if (Physics.Raycast(controller.position - controller.up, -controller.up, out RaycastHit hit, Mathf.Infinity) && pointer == null)
                         {
                             pointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                             GameObject.Destroy(pointer.GetComponent<Rigidbody>());
