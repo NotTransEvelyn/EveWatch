@@ -59,7 +59,7 @@ namespace EveWatch.Mods
                 radius = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                 radius.transform.localScale = new Vector3(1, 0.01f, 1);
                 radius.GetComponent<Renderer>().material.shader = Shader.Find("GUI/Text Shader");
-                radius.GetComponent<Renderer>().material.color = new Color(0.66666666666f, 0, 1, 0.5f);
+                radius.GetComponent<Renderer>().material.color = new Color(0.6f, 0, 1, 0.1f);
 
                 Destroy(radius.GetComponent<Collider>());
                 radius.transform.SetParent(GorillaTagger.Instance.offlineVRRig.transform, false);
