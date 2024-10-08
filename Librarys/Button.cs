@@ -16,14 +16,11 @@ namespace EveWatch.Librarys
             if (touchTime + debounceTime < Time.time && collider.gameObject.name == "RightHandTriggerCollider")
             {
                 touchTime = Time.time;
-                Debug.Log("A");
                 if (collider.GetComponent<GorillaTriggerColliderHandIndicator>() != null)
                 {
-                    Debug.Log("B");
                     GorillaTriggerColliderHandIndicator component = collider.GetComponent<GorillaTriggerColliderHandIndicator>();
                     if (!component.isLeftHand)
                     {
-                        Debug.Log("C");
                         Main.Toggle();
                     }
                 }

@@ -247,7 +247,10 @@ namespace EveWatch.Mods
             {
                 if (radius != null)
                 {
-                    radius.transform.localScale = new Vector3(Infection.dist, 0.0001f, Infection.dist);
+                    float distance = 0;
+                    distance = Infection.dist;
+                    distance = distance * 2f;
+                    radius.transform.localScale = new Vector3(distance, 0.0001f, distance);
                 }
             }
             #endregion
