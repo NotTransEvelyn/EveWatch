@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using System.Net;
 using TMPro;
 using ExitGames.Client.Photon;
+using MonkeNotificationLib;
 
 namespace EveWatch
 {
@@ -129,6 +130,8 @@ namespace EveWatch
                 });
 
                 Debug.Log("EveWatch Has Loaded Successfully");
+                new NotificationManager();
+                NotificationController.AppendMessage("Evewatch", "EveWatch Has Loaded");
                 doneDeletion = true;
             });
         }
@@ -195,14 +198,17 @@ namespace EveWatch
         {
             PageCoolDown = Time.time;
             GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(66, true, 1f);
-            if (Mods.ElementAt(counter).Key.Toggle)
+            var Mod = Mods.ElementAt(counter);
+            if (Mod.Key.Toggle)
             {
-                Mods.ElementAt(counter).Key.OnEnabledMethod();
+                Mod.Key.OnEnabledMethod();
+                NotificationController.AppendMessage("EveWatch", $"{Mod.Key.Name}".WrapColor("green"));
                 return;
             }
-            Mods[Mods.ElementAt(counter).Key] = !Mods.ElementAt(counter).Value;
-            if (Mods[Mods.ElementAt(counter).Key]) Mods.ElementAt(counter).Key.OnEnabledMethod();
-            else Mods.ElementAt(counter).Key.OnDisabledMethod();
+            Mods[Mod.Key] = !Mod.Value;
+            NotificationController.AppendMessage("EveWatch", $"{(Mod.Value ? "Disabled" : "Enabled")}, {Mod.Key.Name}".WrapColor(Mod.Value ? "red" : "green"));
+            if (Mods[Mod.Key]) Mod.Key.OnEnabledMethod();
+            else Mod.Key.OnDisabledMethod();
         }
 
         void OnGUI()

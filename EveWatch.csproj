@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\console" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\console" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Gorilla Tag\BepInEx\core\0Harmony.dll</HintPath>
     </Reference>
