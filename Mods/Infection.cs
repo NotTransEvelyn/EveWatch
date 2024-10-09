@@ -50,7 +50,7 @@ namespace EveWatch.Mods
         {
             foreach (VRRig vrrig in GorillaParent.instance.vrrigs)
             {
-                float distance = Vector3.Distance(vrrig.myBodyDockPositions.chestTransform.position, GorillaTagger.Instance.offlineVRRig.myBodyDockPositions.chestTransform.position);
+                float distance = Vector3.Distance(vrrig.headMesh.transform.position, GorillaTagger.Instance.offlineVRRig.head.rigTarget.position);
 
                 if (GorillaTagger.Instance.offlineVRRig.setMatIndex != 0 && vrrig.setMatIndex == 0 && GorillaLocomotion.Player.Instance.disableMovement == false && distance < dist)
                 {
