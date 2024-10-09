@@ -15,7 +15,6 @@ namespace EveWatch.Librarys
             if (newMasterClient == PhotonNetwork.LocalPlayer)
             {
                 NotificationController.AppendMessage("EveWatch", "You are now master client!".WrapColor("warning"));
-                Console.Beep();
             } 
         }
     }
