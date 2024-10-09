@@ -21,7 +21,7 @@ namespace EveWatch
         static int counter;
         static float PageCoolDown;
         int modCount;
-        static Dictionary<Mod, bool> Mods;
+        public static Dictionary<Mod, bool> Mods;
 
         bool doneDeletion;
 

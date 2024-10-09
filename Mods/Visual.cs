@@ -1,9 +1,12 @@
 ﻿using Photon.Pun;
+using PlayFab;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace EveWatch.Mods
 {
@@ -74,8 +77,49 @@ namespace EveWatch.Mods
         }
         #endregion
 
+        #region ModList
+        string modListText;
+        TextMeshPro modListTMPro;
+
+        void RestartText()
+        {
+            if (modListTMPro != null)
+            {
+                modListText = "";
+                foreach (var item in Main.Mods)
+                {
+                    if (item.Value)
+                    {
+                        modListText += $"{item.Key.Name}\n";
+                    }
+                }
+                modListTMPro.text = modListText;
+            }else
+            {
+                BuildText();
+            }
+        }
+
+        void BuildText()
+        {
+            modListTMPro = new GameObject("ModList").AddComponent<TextMeshPro>();
+            modListTMPro.alignment = TextAlignmentOptions.Center;
+            modListTMPro.richText = true;
+            modListTMPro.material = Instantiate(GorillaTagger.Instance.offlineVRRig.playerText1.material);
+            modListTMPro.font = GorillaTagger.Instance.offlineVRRig.playerText1.font;
+            modListTMPro.fontSize = 0.3f;
+            modListTMPro.transform.localPosition = new Vector3(0.3f, -0.1f, 0.6f);
+            modListTMPro.text = "test";
+            modListTMPro.transform.SetParent(Camera.main.transform, false);
+        }
+        #endregion
+
         void Update()
         {
+            if (Keyboard.current.pKey.wasPressedThisFrame)
+            {
+                RestartText();
+            }
             #region Tracers
             if (TracersEnabled)
             {
