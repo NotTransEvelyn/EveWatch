@@ -16,7 +16,7 @@ namespace EveWatch.Mods
 
             if (gunLibData.isTriggered && gunLibData.isShooting && !lastTriggedButton && gunLibData.isLocked)
             {
-                LucyShoot(false, summoned, gunLibData.lockedPlayer.Creator);
+                LucyShoot(chase, summoned, gunLibData.lockedPlayer.Creator);
             }
             lastTriggedButton = gunLibData.isTriggered;
         }
