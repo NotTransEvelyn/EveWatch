@@ -11,6 +11,7 @@ using System.Net;
 using TMPro;
 using ExitGames.Client.Photon;
 using MonkeNotificationLib;
+using EveWatch.Librarys;
 
 namespace EveWatch
 {
@@ -121,7 +122,9 @@ namespace EveWatch
                 desc.GetComponent<TextMeshPro>().richText = true;
                 desc.GetComponent<TextMeshPro>().text = new WebClient().DownloadString("https://pastebin.com/raw/wErPZy4f").ToUpper();
 
-                new GameObject("EveWatch").AddComponent<Visual>();
+                GameObject holder = new GameObject("EveWatch");
+                holder.AddComponent<Visual>();
+                holder.AddComponent<Callbacks>();
 
                 PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable()
                 {
