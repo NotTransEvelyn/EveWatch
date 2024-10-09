@@ -202,7 +202,6 @@ namespace EveWatch
             if (Mod.Key.Toggle)
             {
                 Mod.Key.OnEnabledMethod();
-                NotificationController.AppendMessage("EveWatch", $"{Mod.Key.Name}".WrapColor("green"));
                 return;
             }
             Mods[Mod.Key] = !Mod.Value;
