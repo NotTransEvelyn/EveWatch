@@ -1,5 +1,6 @@
 ﻿using EveWatch.Librarys;
 using HarmonyLib;
+using MonkeNotificationLib;
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
@@ -178,6 +179,7 @@ namespace EveWatch.Mods
             {
                 Main.GetMod("Swap Speed").Desc = $"Changes your speed\nboost, boost.\nType: {Movement.CurrentSpeedName}";
                 Main.GetMod("Speed Boost").Desc = $"Type: {Movement.CurrentSpeedName}\nGives you a\nlittle boost\nin speed!";
+                NotificationController.AppendMessage("EveWatch", "Swapped Boost: " + CurrentSpeedName);
             }
         }
 

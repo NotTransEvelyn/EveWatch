@@ -66,7 +66,6 @@ namespace EveWatch
                 //Lucy
                 { new Mod("Blue Grab", "Summon blue lucy on\na player!", Empty, ()=>Lucy.LucyGun(false, false), Empty), false },
                 { new Mod("Red Grab", "Summon red lucy on\na player!", Empty, ()=>Lucy.LucyGun(true, false), Empty), false },
-
                 { new Mod("Blue Chase", "Make blue lucy\nchase a player!", Empty, ()=>Lucy.LucyGun(false, true), Empty), false },
                 { new Mod("Red Chase", "Make red lucy\nchase a player!", Empty, ()=>Lucy.LucyGun(true, true), Empty), false },
 

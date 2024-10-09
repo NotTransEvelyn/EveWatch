@@ -1,4 +1,5 @@
 ﻿using GorillaGameModes;
+using MonkeNotificationLib;
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace EveWatch.Mods
             {
                 Main.GetMod("Tag Aura").Desc = $"Type: {CurrentTagAuraName}\nLets you tag\npeople easier!";
                 Main.GetMod("Tag Dist").Desc = $"Distance: {CurrentTagAuraName}";
+                NotificationController.AppendMessage("EveWatch", "Swapped Tag: " + CurrentTagAuraName);
             }
         }
 
