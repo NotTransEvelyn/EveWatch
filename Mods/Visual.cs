@@ -134,7 +134,7 @@ namespace EveWatch.Mods
             modListTMPro.material = Instantiate(GorillaTagger.Instance.offlineVRRig.playerText1.material);
             modListTMPro.font = GorillaTagger.Instance.offlineVRRig.playerText1.font;
             modListTMPro.fontSize = 0.15f;
-            modListTMPro.transform.localPosition = new Vector3(-9.8f, -2.5f, 0.5f);
+            modListTMPro.transform.localPosition = new Vector3(-9.7f, -2.4f, 0.6f);
             modListTMPro.text = "";
             modListTMPro.transform.SetParent(Camera.main.transform, false);
             RestartText();
