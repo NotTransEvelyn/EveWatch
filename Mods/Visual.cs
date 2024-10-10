@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using MonkeNotificationLib;
+using Photon.Pun;
 using PlayFab;
 using System;
 using System.Collections.Generic;
@@ -78,39 +79,65 @@ namespace EveWatch.Mods
         #endregion
 
         #region ModList
-        string modListText;
-        TextMeshPro modListTMPro;
+        public static bool modListEnabled = true;
+        static string modListText;
+        static TextMeshPro modListTMPro;
 
-        void RestartText()
+        public static void RestartText()
         {
-            if (modListTMPro != null)
+            if (modListEnabled)
             {
-                modListText = "";
-                foreach (var item in Main.Mods)
+                if (modListTMPro != null)
                 {
-                    if (item.Value)
+                    modListText = "";
+                    foreach (var item in Main.Mods)
                     {
-                        modListText += $"{item.Key.Name}\n";
+                        if (item.Value && item.Key.Name != "Mod List")
+                        {
+                            if (item.Key.Name != "Tag Aura" && item.Key.Name != "Speed Boost")
+                            {
+                                modListText += $"{item.Key.Name}\n";
+                            }else
+                            {
+                                if (item.Key.Name == "Tag Aura")
+                                {
+                                    modListText += $"{item.Key.Name}, " + Infection.CurrentTagAuraName.WrapColor("green") + "\n";
+                                }else if (item.Key.Name == "Speed Boost")
+                                {
+                                    modListText += $"{item.Key.Name}, " + Movement.CurrentSpeedName.WrapColor("green") + "\n";
+                                }
+                            }
+                        }
                     }
+                    modListTMPro.text = modListText.ToUpper();
                 }
-                modListTMPro.text = modListText;
-            }else
-            {
-                BuildText();
+                else
+                {
+                    BuildText();
+                }
             }
+            else
+            {
+                if (modListTMPro.transform != null)
+                {
+                    GameObject.Destroy(modListTMPro.gameObject);
+                }
+            }
+
         }
 
-        void BuildText()
+        static void BuildText()
         {
             modListTMPro = new GameObject("ModList").AddComponent<TextMeshPro>();
-            modListTMPro.alignment = TextAlignmentOptions.Center;
+            modListTMPro.alignment = TextAlignmentOptions.TopRight;
             modListTMPro.richText = true;
             modListTMPro.material = Instantiate(GorillaTagger.Instance.offlineVRRig.playerText1.material);
             modListTMPro.font = GorillaTagger.Instance.offlineVRRig.playerText1.font;
-            modListTMPro.fontSize = 0.3f;
-            modListTMPro.transform.localPosition = new Vector3(0.3f, -0.1f, 0.6f);
-            modListTMPro.text = "test";
+            modListTMPro.fontSize = 0.15f;
+            modListTMPro.transform.localPosition = new Vector3(-9.8f, -2.5f, 0.5f);
+            modListTMPro.text = "";
             modListTMPro.transform.SetParent(Camera.main.transform, false);
+            RestartText();
         }
         #endregion
 

@@ -15,7 +15,7 @@ using EveWatch.Librarys;
 
 namespace EveWatch
 {
-    [BepInPlugin("Eve.EveWatch", "EveWatch", "0.1.7")]
+    [BepInPlugin("Eve.EveWatch", "EveWatch", "0.1.8")]
     public class Main : BaseUnityPlugin
     {
         static int counter;
@@ -58,6 +58,7 @@ namespace EveWatch
                 { new Mod("Iron Monk", "Press grip to\nfly like iron\nman!", Empty, Movement.IronMonk, Empty), false },
 
                 //Visual
+                { new Mod("Mod List", "Shows all your\nenabled mods!", () => Visual.modListEnabled = true, Empty, () => Visual.modListEnabled = false), true },
                 { new Mod("Tracers", "Tracers to every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.Tracers, Empty, Visual.DisableTracers), false },
                 { new Mod("Box ESP", "Boxes around every\nmonke!\nGreen = Untagged\nRed = Tagged", Visual.BoxESP, Empty, Visual.DisableBoxESP), false },
                 { new Mod("Watch ESP", "Boxes around every\nEvewatch user!", Visual.WatchESP, Empty, Visual.DisableWatchESP), false },
@@ -203,6 +204,7 @@ namespace EveWatch
             var Mod = Mods.ElementAt(counter);
             if (Mod.Key.Toggle)
             {
+                Visual.RestartText();
                 Mod.Key.OnEnabledMethod();
                 return;
             }
@@ -210,6 +212,7 @@ namespace EveWatch
             NotificationController.AppendMessage("EveWatch", $"{(Mod.Value ? "Disabled" : "Enabled")}, {Mod.Key.Name}".WrapColor(Mod.Value ? "red" : "green"));
             if (Mods[Mod.Key]) Mod.Key.OnEnabledMethod();
             else Mod.Key.OnDisabledMethod();
+            Visual.RestartText();
         }
 
         void OnGUI()
