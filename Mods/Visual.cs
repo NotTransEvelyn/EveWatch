@@ -39,7 +39,7 @@ namespace EveWatch.Mods
             SkellEspEnabled = false;
             foreach(VRRig rig in Resources.FindObjectsOfTypeAll<VRRig>())
             {
-                rig.ShowSkeleton(false);
+                ShowSkeleton(rig, false);
             }
         }
         #endregion
@@ -143,10 +143,6 @@ namespace EveWatch.Mods
 
         void Update()
         {
-            if (Keyboard.current.pKey.wasPressedThisFrame)
-            {
-                RestartText();
-            }
             #region Tracers
             if (TracersEnabled)
             {
@@ -313,7 +309,7 @@ namespace EveWatch.Mods
                         VRRig vRRig = GorillaTagManager.instance.FindPlayerVRRig(wawa);
                         if (!vRRig.isLocal)
                         {
-                            vRRig.ShowSkeleton(true);
+                            ShowSkeleton(vRRig, true);
                             vRRig.skeleton.renderer.material.shader = Shader.Find("GUI/Text Shader");
 
                             if (vRRig.setMatIndex != 2 && vRRig.setMatIndex != 1) vRRig.skeleton.renderer.material.color = Color.green;
@@ -344,6 +340,13 @@ namespace EveWatch.Mods
                 }
             }
             #endregion
+        }
+
+        static void ShowSkeleton(VRRig rig, bool show)
+        {
+            rig.skeleton.renderer.enabled = show;
+            rig.mainSkin.enabled = !show;
+            rig.faceSkin.enabled = !show;
         }
     }
 }
