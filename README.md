@@ -4,11 +4,17 @@ This is EveWatch, a mod I made for "Gorilla Tag", this was oringally going to be
 
 # Features
 > Disconnect, Makes you leave the lobby!
+> 
 > Platforms,Press grip to use them!
+> 
 > Speed Boost, $Type: {Movement.CurrentSpeedName} Gives you a little boost in speed!
+> 
 > No Freeze, Just no tag freeze pretty easy to understand.
+> 
 > Tag Aura, $Type: {Infection.CurrentTagAuraName} Lets you tag people easier!
+> 
 > Flight, Press A to fly!
+> 
 > Iron Monk, Press grip to fly like iron man!
 > Mod List, Shows all your enabled mods!
 > Tracers, Tracers to every monke!
