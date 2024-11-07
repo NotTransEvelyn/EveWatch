@@ -39,6 +39,7 @@ namespace EveWatch
             Infection.SwitchTagType(true);
             Mods = new Dictionary<Mod, bool>()
             {
+                // {new Mod(TITlE, DESCRIPTION, ON ENABLED, UPDATED ENABLED (gets called constantly while the mod is enabled) ON DISABLE, toggleable (optional, if true, it will instantly disable itself), ENABLED (if its enabled}
                 //Title
                 { new Mod("Eve Watch!", "Welcome to\nEveWatch! Look at\nthe CoC board\nfor the controls!", Empty, Empty, Empty), false},
 
